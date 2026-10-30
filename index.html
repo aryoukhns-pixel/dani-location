@@ -1,487 +1,154 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="DANI — version unique consolidée du prototype de location de voitures au Maroc.">
-<title>DANI | Version unique consolidée</title>
-<style>
-:root{--ink:#142033;--muted:#657184;--gold:#d5a84f;--paper:#f6f7f9;--white:#fff;--line:#e4e8ee;--green:#147d55}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:var(--paper)}a{color:inherit}button,input,select{font:inherit}
-header{background:#101a2a;color:#fff;padding:17px 5%;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}
-.brand{font-size:25px;font-weight:900;letter-spacing:4px}.brand small{display:block;font-size:10px;letter-spacing:2px;color:#e3c37c;margin-top:4px}
-nav{display:flex;align-items:center;gap:18px;flex-wrap:wrap}nav a{text-decoration:none;font-size:14px;color:#e5e9f0}
-select.lang{background:#243147;color:#fff;border:1px solid #46536a;padding:9px;border-radius:8px}
-.hero{padding:62px 5% 38px;background:linear-gradient(120deg,#111c2d 0%,#1b304a 65%,#243c52 100%);color:white}
-.hero-inner{max-width:1120px;margin:auto;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
-.eyebrow{color:#e3c37c;text-transform:uppercase;letter-spacing:2px;font-size:12px;font-weight:bold}
-h1{font-size:clamp(35px,5vw,58px);line-height:1.04;margin:14px 0}h1 span{color:#e3c37c}.hero p{color:#d6deea;line-height:1.7;max-width:540px}
-.hero-art{min-height:230px;border:1px solid #3d4b60;border-radius:24px;background:radial-gradient(ellipse at 50% 80%,#3d536a 0,#20334a 44%,#17263a 75%);display:flex;align-items:center;justify-content:center;font-size:100px}
-.search{max-width:1120px;margin:24px auto 0;background:#fff;color:var(--ink);border-radius:16px;padding:17px;display:grid;grid-template-columns:repeat(3,1fr) auto;gap:12px;box-shadow:0 12px 32px #07132335}
-.field label{display:block;font-size:12px;color:var(--muted);margin:0 0 7px}.field input,.field select{width:100%;border:1px solid var(--line);border-radius:9px;padding:12px;background:white;color:var(--ink)}
-.btn{border:0;border-radius:10px;padding:13px 18px;background:var(--gold);color:#172033;font-weight:bold;cursor:pointer}.btn:hover{filter:brightness(.96)}.btn.dark{background:#152238;color:white}
-main{max-width:1120px;margin:42px auto;padding:0 20px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap;margin-bottom:20px}.section-head h2{margin:0 0 7px;font-size:28px}.section-head p{margin:0;color:var(--muted)}
-.cars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.car{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 5px 16px #12223a08}.car-art{height:155px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#e9edf2,#d7dee7);font-size:68px}.car-body{padding:17px}.car h3{margin:0 0 8px;font-size:19px}.meta{color:var(--muted);font-size:13px;display:flex;gap:12px;flex-wrap:wrap}.price{font-size:22px;font-weight:800;margin:15px 0}.price small{font-size:12px;color:var(--muted);font-weight:normal}.car .btn{width:100%}
-.note{margin-top:20px;background:#fff8e8;border:1px solid #f1dfb7;border-radius:12px;padding:14px 16px;color:#624b1d;font-size:13px;line-height:1.6}
-.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}.step{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}.step b{display:block;margin:10px 0}.step span{color:var(--muted);font-size:14px;line-height:1.6}
-footer{margin-top:45px;background:#101a2a;color:#d7deea;padding:30px 5%;text-align:center;font-size:13px}footer strong{letter-spacing:3px;color:#e3c37c}
-.modal{display:none;position:fixed;inset:0;background:#09111dcc;z-index:5;padding:20px;align-items:center;justify-content:center}.modal.open{display:flex}.modal-box{width:min(520px,100%);background:white;border-radius:18px;padding:24px;max-height:90vh;overflow:auto}.modal-top{display:flex;justify-content:space-between;align-items:center}.close{border:0;background:#edf0f4;border-radius:8px;padding:8px 12px;cursor:pointer}.modal-box p{color:var(--muted);line-height:1.5}.modal-box label{display:block;font-size:13px;margin:13px 0 6px}.modal-box input,.modal-box select{width:100%;padding:12px;border:1px solid var(--line);border-radius:9px}.modal-box .btn{width:100%;margin-top:16px}
-@media(max-width:760px){.hero-inner{grid-template-columns:1fr}.hero-art{min-height:150px;font-size:76px}.search{grid-template-columns:1fr}.cars,.how{grid-template-columns:1fr}.hero{padding-top:40px}nav{gap:10px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANI | Location de Voitures</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root { --ink: #142033; --muted: #657184; --gold: #d5a84f; --paper: #f6f7f9; --white: #fff; --line: #e4e8ee; --green: #147d55; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink); background: var(--paper); }
+        a { color: inherit; text-decoration: none; }
+        .inner { max-width: 1120px; margin: auto; display: grid; gap: 30px; padding: 0 20px; }
+        header { background: #101a2a; color: white; padding: 17px 5px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .brand { font-size: 25px; font-weight: 900; letter-spacing: .4px; }
+        .brand small { display: block; font-size: 10px; letter-spacing: 2px; color: #e3c37c; }
+        .hero { padding: 60px 5%; background: linear-gradient(120deg, #111c2d 0%, #1b304a 65%, #24352 100%); color: white; }
+        .hero-inner { max-width: 1120px; margin: auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 30px; align-items: center; }
+        .eyebrow { color: #e3c37c; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; font-weight: bold; }
+        .hero h1 { font-size: clamp(35px, 5vw, 58px); line-height: 1.04; margin: 14px 0; }
+        .hero h1 span { color: #e3c37c; }
+        .hero p { color: #d6deea; line-height: 1.7; max-width: 480px; }
+        .search { background: white; border-radius: 12px; padding: 17px; display: grid; gap: 12px; margin-top: 25px; }
+        .field label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
+        input, select { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 14px; }
+        .btn { background: var(--gold); color: white; border: none; padding: 13px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
+        .btn:hover { opacity: 0.9; }
+        section { padding: 30px 5%; }
+        .cars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        .car-card { background: white; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+        .car-art { background: var(--paper); height: 120px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .car-body { padding: 15px; }
+        .car-body h3 { margin: 0 0 10px 0; font-size: 18px; }
+        .car-price { color: var(--gold); font-weight: bold; font-size: 16px; }
+        .hidden { display: none; }
+        @media(max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .cars-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
-<header>
-  <div class="brand">DANI<small id="tagline">LOCATION DE VOITURES</small></div>
-  <nav><a href="#cars" data-i="carsNav">Voitures</a><a href="#how" data-i="howNav">Comment ça marche</a><a href="#contact" data-i="contactNav">Contact</a>
-  <select class="lang" id="language" aria-label="Language">
-    <option value="fr">Français</option><option value="en">English</option><option value="es">Español</option>
-    <option value="ar">العربية</option><option value="de">Deutsch</option><option value="it">Italiano</option>
-    <option value="nl">Nederlands</option><option value="pt">Português</option><option value="tr">Türkçe</option>
-    <option value="zh">简体中文</option><option value="ru">Русский</option><option value="ja">日本語</option>
-    <option value="pl">Polski</option><option value="sv">Svenska</option><option value="ko">한국어</option>
-  </select></nav>
 </header>
+
 <section class="hero">
- <div class="hero-inner">
-  <div><div class="eyebrow" data-i="eyebrow">Votre route commence ici</div><h1 data-i="headline">La bonne voiture.<br><span>Le bon voyage.</span></h1><p data-i="intro">Découvrez des voitures proposées par des partenaires locaux au Maroc. Envoyez une demande de réservation simplement.</p></div>
-  <div class="hero-art" aria-label="Illustration de voiture">🚘</div>
- </div>
- <form class="search" id="searchForm">
-  <div class="field"><label data-i="cityLabel" for="city">Ville</label><select id="city"><option value="">Toutes les villes</option><option>Casablanca</option><option>Marrakech</option><option>Agadir</option><option>Tanger</option><option>Rabat</option></select></div>
-  <div class="field"><label data-i="pickupLabel" for="pickup">Date de départ</label><input type="date" id="pickup"></div>
-  <div class="field"><label data-i="returnLabel" for="return">Date de retour</label><input type="date" id="return"></div>
-  <button class="btn" type="submit" data-i="searchBtn">Rechercher</button>
- </form>
-</section>
-<main>
- <section id="cars">
-  <div class="section-head"><div><h2 data-i="carsTitle">Voitures en vedette</h2><p data-i="carsSub">Exemples de présentation — disponibilité à confirmer.</p></div></div>
-  <div class="cars" id="carGrid">
-   <article class="car" data-city="Casablanca"><div class="car-art">🚗</div><div class="car-body"><h3>Dacia Logan</h3><div class="meta"><span>📍 Casablanca</span><span>⚙️ Manuelle</span><span>⛽ Essence</span></div><div class="price">250 MAD <small data-i="perDay">/ jour</small></div><button class="btn dark rent" data-car="Dacia Logan" data-city="Casablanca" data-price="250" data-i="bookBtn">Demander une réservation</button></div></article>
-   <article class="car" data-city="Marrakech"><div class="car-art">🚙</div><div class="car-body"><h3>Renault Clio</h3><div class="meta"><span>📍 Marrakech</span><span>⚙️ Manuelle</span><span>⛽ Diesel</span></div><div class="price">300 MAD <small data-i="perDay">/ jour</small></div><button class="btn dark rent" data-car="Renault Clio" data-city="Marrakech" data-price="300" data-i="bookBtn">Demander une réservation</button></div></article>
-   <article class="car" data-city="Agadir"><div class="car-art">🚘</div><div class="car-body"><h3>Hyundai i10</h3><div class="meta"><span>📍 Agadir</span><span>⚙️ Automatique</span><span>⛽ Essence</span></div><div class="price">280 MAD <small data-i="perDay">/ jour</small></div><button class="btn dark rent" data-car="Hyundai i10" data-city="Agadir" data-price="280" data-i="bookBtn">Demander une réservation</button></div></article>
-  </div>
-  <div class="note" data-i="demoNote">Version de démonstration : les voitures et les prix affichés sont fictifs et ne peuvent pas être réservés. Avant de publier ce site pour de vrais clients, remplacez-les par des véhicules réels avec l’accord de leurs propriétaires et confirmez les prix et disponibilités.</div>
- </section>
- <section id="ownerSettings" style="margin-top:44px">
-  <div class="section-head"><div><h2>Paramètres de réception</h2><p>Numéro de réception choisi pour les demandes DANI. Vous pouvez le tester ci-dessous.</p></div></div>
-  <div class="step">
-    <form id="whatsappSettingsForm">
-      <div class="field"><label for="ownerWhatsapp">Numéro WhatsApp de réception (format international, chiffres uniquement)</label><input id="ownerWhatsapp" inputmode="numeric" autocomplete="tel" value="212623406676" required placeholder="2126XXXXXXXX"></div>
-      <button class="btn" type="submit" style="margin-top:12px">Enregistrer le numéro</button>
-      <button class="btn dark" type="button" id="testWhatsappBtn" style="margin-top:12px">Tester WhatsApp (message de test)</button>
-      <p id="whatsappSettingsResult" role="status"></p>
-    </form>
-    <p class="note">Le numéro est enregistré dans ce navigateur. Le bouton de test ouvre WhatsApp avec un message préparé, sans l’envoyer automatiquement. Avant publication, le numéro devra être configuré côté serveur ou dans une version administrateur sécurisée. Ne saisissez pas de données bancaires ici.</p>
-  </div>
-</section>
-<section id="dataBackup" style="margin-top:44px">
-  <div class="section-head"><div><h2>Sauvegarde des données</h2><p>Exportez une copie des annonces et demandes enregistrées sur ce navigateur.</p></div></div>
-  <div class="step">
-    <p>La sauvegarde comprend les véhicules, leurs photos enregistrées localement, les demandes de réservation et le numéro WhatsApp configuré. Elle ne comprend aucune donnée de commission ni de virement aux propriétaires.</p>
-    <button type="button" class="btn" id="downloadDaniBackup">Télécharger une sauvegarde JSON</button>
-    <div class="field" style="margin-top:16px">
-      <label for="restoreDaniBackup">Restaurer une sauvegarde DANI (.json)</label>
-      <input type="file" id="restoreDaniBackup" accept=".json,application/json">
+    <div class="hero-inner">
+        <div>
+            <div class="eyebrow">Votre route commence ici</div>
+            <h1>La bonne voiture.<br><span>Le bon voyage.</span></h1>
+            <p>Découvrez des voitures proposées par des partenaires locaux au Maroc. Envoyez une demande de réservation simplement.</p>
+        </div>
+        <div class="search">
+            <div class="field">
+                <label>Ville de départ</label>
+                <select>
+                    <option>Toutes les villes</option>
+                    <option>Casablanca</option>
+                    <option>Marrakech</option>
+                    <option>Agadir</option>
+                </select>
+            </div>
+        </div>
     </div>
-    <button type="button" class="btn dark" id="restoreDaniBackupBtn" style="margin-top:10px">Restaurer la sauvegarde sélectionnée</button>
-    <p id="backupStatus" role="status"></p>
-    <p class="note">Attention : restaurer une sauvegarde remplace les annonces et demandes locales actuelles. Téléchargez d’abord une copie si vous souhaitez les conserver. Ces données restent dans ce navigateur ; cela ne les synchronise pas entre plusieurs appareils.</p>
-  </div>
 </section>
-<section id="manageBookings" style="margin-top:44px">
-  <div class="section-head"><div><h2>Gestion des réservations</h2><p>Demandes enregistrées dans ce navigateur uniquement.</p></div></div>
-  <div class="step">
-    <div id="bookingStats" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px"></div>
-    <p class="note">Contrôle de chevauchement activé pour les réservations marquées « Confirmé » dans ce navigateur. Ce contrôle local n’empêche pas les doubles réservations entre appareils différents.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:16px">
-      <div class="field"><label for="bookingSearch">Rechercher une demande</label><input id="bookingSearch" type="search" placeholder="Nom, téléphone, voiture, référence"></div>
-      <div class="field"><label for="bookingStatusFilter">Filtrer par état</label><select id="bookingStatusFilter"><option value="">Tous les états</option><option>Nouveau</option><option>Confirmé</option><option>Annulé</option></select></div>
+
+<section id="cars">
+    <div class="inner">
+        <h2>Voitures en vedette</h2>
+        <p style="color: var(--muted); font-size: 14px; margin-bottom: 20px;">Exemples de présentation — disponibilité à confirmer.</p>
+        <div class="cars-grid" id="cars-container">
+            <p>Chargement des voitures...</p>
+        </div>
     </div>
-    <div id="bookingAdminList"><p>Aucune demande enregistrée pour le moment.</p></div>
-    <button type="button" class="btn" id="exportBookingsBtn" style="margin-top:12px">Exporter les demandes (CSV)</button>
-    <button type="button" class="btn dark" id="clearBookingsBtn" style="margin-top:12px">Effacer les demandes locales</button>
-    <p class="note">Prototype local : les demandes ne sont pas envoyées automatiquement à un serveur. Pour recevoir les réservations des clients à distance, il faudra publier le site et connecter une base de données sécurisée. Ce tableau ne stocke ni les commissions ni les virements aux propriétaires.</p>
-  </div>
 </section>
-<section id="manageCars" style="margin-top:44px">
-  <div class="section-head"><div><h2>Gestion des véhicules</h2><p>Ajoutez des annonces pour tester leur affichage dans ce navigateur.</p></div></div>
-  <div class="step">
-    <form id="addCarForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
-      <div class="field"><label for="newCarName">Modèle du véhicule</label><input id="newCarName" required placeholder="Ex. Dacia Sandero"></div>
-      <div class="field"><label for="newCarCity">Ville</label><select id="newCarCity"><option>Casablanca</option><option>Marrakech</option><option>Agadir</option><option>Tanger</option><option>Rabat</option></select></div>
-      <div class="field"><label for="newCarPrice">Prix par jour (MAD)</label><input id="newCarPrice" type="number" min="1" required placeholder="300"></div>
-      <div class="field"><label for="newCarGear">Transmission</label><select id="newCarGear"><option>Manuelle</option><option>Automatique</option></select></div>
-      <div class="field"><label for="newCarFuel">Carburant</label><select id="newCarFuel"><option>Essence</option><option>Diesel</option><option>Hybride</option><option>Électrique</option></select></div>
-      <div class="field" style="grid-column:1/-1"><label for="newCarPhoto">Photo du véhicule (facultatif)</label><input id="newCarPhoto" type="file" accept="image/*"><div id="newCarPhotoPreview" style="margin-top:10px"></div></div>
-      <button class="btn" type="submit">Ajouter le véhicule</button>
-    </form>
-    <p id="addCarResult" role="status"></p>
-  </div>
-  <div class="note">Mode de démonstration uniquement : les annonces ajoutées sont conservées dans ce navigateur et ne sont pas transmises à un serveur ni visibles par les autres visiteurs. Pour publier réellement les voitures, il faudra ensuite une base de données et un espace d’administration sécurisé.</div>
+
+<section id="reservation" style="background: white;">
+    <div class="inner" style="display: block;">
+        <h2 style="text-align: center;">Demande de réservation</h2>
+        <p style="text-align: center; color: var(--muted); margin-bottom: 30px;">Laissez vos coordonnées. Votre demande ne constitue pas une réservation confirmée.</p>
+        <form id="bookingForm" style="max-width: 500px; margin: auto; display: grid; gap: 15px;">
+            <div class="field">
+                <label>Nom complet</label>
+                <input type="text" id="customerName" required placeholder="Ex: Mido">
+            </div>
+            <div class="field">
+                <label>Numéro de téléphone</label>
+                <input type="tel" id="customerPhone" required placeholder="Ex: 062XXXXXXX">
+            </div>
+            <div class="field">
+                <label>Choisir une voiture</label>
+                <select id="selectedCar" required>
+                    <option value="">Sélectionnez une voiture</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Date de départ</label>
+                <input type="date" id="startDate" required>
+            </div>
+            <div class="field">
+                <label>Date de retour</label>
+                <input type="date" id="endDate" required>
+            </div>
+            <button type="submit" class="btn" style="margin-top: 10px;">Envoyer la demande</button>
+            <p id="successMessage" class="hidden" style="color: var(--green); font-weight: bold; text-align: center;">Demande envoyée avec succès !</p>
+        </form>
+    </div>
 </section>
-\n <section id="how" style="margin-top:44px"><div class="section-head"><div><h2 data-i="howTitle">Simple, du début à la fin</h2><p data-i="howSub">Une première version légère pour tester le projet.</p></div></div>
- <div class="how"><div class="step"><div>🔎</div><b data-i="step1Title">1. Choisissez</b><span data-i="step1Text">Filtrez les voitures par ville et dates souhaitées.</span></div><div class="step"><div>📩</div><b data-i="step2Title">2. Envoyez une demande</b><span data-i="step2Text">Indiquez vos coordonnées et la période de location.</span></div><div class="step"><div>🤝</div><b data-i="step3Title">3. Confirmez</b><span data-i="step3Text">L’équipe vérifie la disponibilité avec le propriétaire avant confirmation.</span></div></div></section>
- <section id="contact" style="margin-top:36px;text-align:center"><h2 data-i="contactTitle">Vous avez des voitures à proposer ?</h2><p style="color:var(--muted)" data-i="contactText">Rejoignez le réseau DANI en tant que partenaire de location.</p><button class="btn" id="partnerBtn" data-i="partnerBtn">Devenir partenaire</button></section>
-</main>
-<footer><strong>DANI</strong><p id="footerText">Location de voitures · Rent a car · Alquiler de coches</p><span>© DANI — <span data-i="footerNote">Prototype de démonstration</span></span></footer>
-<div class="modal" id="bookingModal"><div class="modal-box"><div class="modal-top"><h2 id="modalTitle">Demande de réservation</h2><button class="close" id="closeModal">✕</button></div><p id="modalDesc">Laissez vos coordonnées. Votre demande ne constitue pas une réservation confirmée.</p>
-<form id="bookingForm"><label data-i="nameLabel" for="name">Nom complet</label><input id="name" required autocomplete="name"><label data-i="phoneLabel" for="phone">Téléphone / WhatsApp</label><input id="phone" required autocomplete="tel"><label data-i="emailLabel" for="email">E-mail (facultatif)</label><input id="email" type="email" autocomplete="email"><label data-i="modalCityLabel" for="modalCity">Ville de prise en charge</label><input id="modalCity" required><label data-i="modalPickupLabel" for="modalPickup">Date de départ</label><input id="modalPickup" type="date" required><label data-i="modalReturnLabel" for="modalReturn">Date de retour</label><input id="modalReturn" type="date" required><button class="btn" type="submit" data-i="sendBtn">Préparer la demande</button></form><p id="formResult" role="status"></p></div></div>
+
 <script>
-const WHATSAPP_RECEIVER = "212623406676"; // Numéro fixe de réception des demandes DANI
-const translations={
-fr:{tagline:"LOCATION DE VOITURES",carsNav:"Voitures",howNav:"Comment ça marche",contactNav:"Contact",eyebrow:"Votre route commence ici",headline:'La bonne voiture.<br><span>Le bon voyage.</span>',intro:"Découvrez des voitures proposées par des partenaires locaux au Maroc. Envoyez une demande de réservation simplement.",cityLabel:"Ville",pickupLabel:"Date de départ",returnLabel:"Date de retour",searchBtn:"Rechercher",carsTitle:"Voitures en vedette",carsSub:"Exemples de présentation — disponibilité à confirmer.",perDay:"/ jour",bookBtn:"Demander une réservation",demoNote:"Version de démonstration : les voitures et les prix affichés sont fictifs et ne peuvent pas être réservés. Avant de publier ce site pour de vrais clients, remplacez-les par des véhicules réels avec l’accord de leurs propriétaires et confirmez les prix et disponibilités.",howTitle:"Simple, du début à la fin",howSub:"Une première version légère pour tester le projet.",step1Title:"1. Choisissez",step1Text:"Filtrez les voitures par ville et dates souhaitées.",step2Title:"2. Envoyez une demande",step2Text:"Indiquez vos coordonnées et la période de location.",step3Title:"3. Confirmez",step3Text:"L’équipe vérifie la disponibilité avec le propriétaire avant confirmation.",contactTitle:"Vous avez des voitures à proposer ?",contactText:"Rejoignez le réseau DANI en tant que partenaire de location.",partnerBtn:"Devenir partenaire",footerNote:"Prototype de démonstration",modalTitle:"Demande de réservation",modalDesc:"Laissez vos coordonnées. Votre demande ne constitue pas une réservation confirmée.",nameLabel:"Nom complet",phoneLabel:"Téléphone / WhatsApp",emailLabel:"E-mail (facultatif)",modalCityLabel:"Ville de prise en charge",modalPickupLabel:"Date de départ",modalReturnLabel:"Date de retour",sendBtn:"Préparer la demande",allCities:"Toutes les villes",noCars:"Aucune voiture d’exemple dans cette ville. Essayez une autre ville.",resultIntro:"Copiez ce message et envoyez-le au gestionnaire du site :",partnerSubject:"Demande pour devenir partenaire DANI",partnerText:"Bonjour, je souhaite proposer mes voitures sur la plateforme DANI. Merci de me contacter.",whatsappNote:"Le formulaire ne transmet pas automatiquement vos données : il prépare un message à copier."},
-en:{tagline:"CAR RENTAL",carsNav:"Cars",howNav:"How it works",contactNav:"Contact",eyebrow:"Your journey starts here",headline:'The right car.<br><span>The right journey.</span>',intro:"Discover cars offered by local partners in Morocco. Send a rental request in a few simple steps.",cityLabel:"City",pickupLabel:"Pickup date",returnLabel:"Return date",searchBtn:"Search",carsTitle:"Featured cars",carsSub:"Sample listings — availability must be confirmed.",perDay:"/ day",bookBtn:"Request to book",demoNote:"Demo version: the cars and prices shown are fictional and cannot be booked. Before publishing for real customers, replace them with real vehicles with owners’ permission and confirm prices and availability.",howTitle:"Simple from start to finish",howSub:"A lightweight first version to test the idea.",step1Title:"1. Choose",step1Text:"Filter cars by city and preferred dates.",step2Title:"2. Send a request",step2Text:"Share your contact details and rental dates.",step3Title:"3. Confirm",step3Text:"The team checks availability with the owner before confirmation.",contactTitle:"Have cars to offer?",contactText:"Join the DANI network as a rental partner.",partnerBtn:"Become a partner",footerNote:"Demo prototype",modalTitle:"Booking request",modalDesc:"Leave your contact details. This request is not a confirmed booking.",nameLabel:"Full name",phoneLabel:"Phone / WhatsApp",emailLabel:"Email (optional)",modalCityLabel:"Pickup city",modalPickupLabel:"Pickup date",modalReturnLabel:"Return date",sendBtn:"Prepare request",allCities:"All cities",noCars:"No sample cars in this city. Try another city.",resultIntro:"Copy this message and send it to the site manager:",partnerSubject:"DANI partner request",partnerText:"Hello, I would like to list my cars on the DANI platform. Please contact me.",whatsappNote:"This form does not automatically transmit your details; it prepares a message to copy."},
-es:{tagline:"ALQUILER DE COCHES",carsNav:"Coches",howNav:"Cómo funciona",contactNav:"Contacto",eyebrow:"Tu viaje empieza aquí",headline:'El coche ideal.<br><span>El viaje perfecto.</span>',intro:"Descubre coches ofrecidos por colaboradores locales en Marruecos. Envía una solicitud de alquiler fácilmente.",cityLabel:"Ciudad",pickupLabel:"Fecha de recogida",returnLabel:"Fecha de devolución",searchBtn:"Buscar",carsTitle:"Coches destacados",carsSub:"Ejemplos de presentación: disponibilidad por confirmar.",perDay:"/ día",bookBtn:"Solicitar reserva",demoNote:"Versión de demostración: los coches y precios son ficticios y no se pueden reservar. Antes de publicar la web para clientes reales, sustitúyelos por vehículos reales con autorización de sus propietarios y confirma precios y disponibilidad.",howTitle:"Sencillo de principio a fin",howSub:"Una primera versión ligera para probar el proyecto.",step1Title:"1. Elige",step1Text:"Filtra coches por ciudad y fechas deseadas.",step2Title:"2. Envía una solicitud",step2Text:"Indica tus datos de contacto y las fechas de alquiler.",step3Title:"3. Confirma",step3Text:"El equipo verifica la disponibilidad con el propietario antes de confirmar.",contactTitle:"¿Tienes coches para ofrecer?",contactText:"Únete a la red DANI como socio de alquiler.",partnerBtn:"Ser socio",footerNote:"Prototipo de demostración",modalTitle:"Solicitud de reserva",modalDesc:"Deja tus datos de contacto. La solicitud no es una reserva confirmada.",nameLabel:"Nombre completo",phoneLabel:"Teléfono / WhatsApp",emailLabel:"Correo electrónico (opcional)",modalCityLabel:"Ciudad de recogida",modalPickupLabel:"Fecha de recogida",modalReturnLabel:"Fecha de devolución",sendBtn:"Preparar solicitud",allCities:"Todas las ciudades",noCars:"No hay coches de ejemplo en esta ciudad. Prueba otra ciudad.",resultIntro:"Copia este mensaje y envíalo al administrador del sitio:",partnerSubject:"Solicitud para ser socio de DANI",partnerText:"Hola, quiero publicar mis coches en la plataforma DANI. Por favor, contacten conmigo.",whatsappNote:"El formulario no envía automáticamente tus datos; prepara un mensaje para copiar."}
-};
+    const SUPABASE_URL = 'https://juzfpyjknayammztdfvq.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_hgA_vNaEcF72KgSX4CX5Xw_HL1U1Dr5';
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-Object.assign(translations, {
-ar:{
-tagline:"تأجير السيارات",carsNav:"السيارات",howNav:"كيف يعمل الموقع",contactNav:"اتصل بنا",eyebrow:"رحلتك تبدأ من هنا",headline:'السيارة المناسبة.<br><span>والرحلة الأجمل.</span>',intro:"اكتشف سيارات يقدمها شركاء محليون في المغرب وأرسل طلب كراء بسهولة.",cityLabel:"المدينة",pickupLabel:"تاريخ الاستلام",returnLabel:"تاريخ الإرجاع",searchBtn:"بحث",carsTitle:"سيارات مميزة",carsSub:"أمثلة للعرض — يجب تأكيد التوفر.",perDay:"/ اليوم",bookBtn:"طلب الحجز",demoNote:"نسخة تجريبية: السيارات والأسعار المعروضة افتراضية ولا يمكن حجزها. قبل استقبال العملاء، استبدلها بسيارات حقيقية بموافقة أصحابها وأكد الأسعار والتوفر.",howTitle:"خطوات بسيطة",howSub:"نسخة أولية لاختبار المشروع.",step1Title:"1. اختر",step1Text:"ابحث حسب المدينة والتواريخ المطلوبة.",step2Title:"2. أرسل الطلب",step2Text:"أدخل بيانات الاتصال وفترة الكراء.",step3Title:"3. أكد الحجز",step3Text:"يتحقق الفريق من التوفر مع المالك قبل التأكيد.",contactTitle:"هل لديك سيارات للعرض؟",contactText:"انضم إلى شبكة DANI كشريك كراء.",partnerBtn:"كن شريكًا",footerNote:"نسخة تجريبية",modalTitle:"طلب حجز",modalDesc:"أدخل بيانات الاتصال. هذا الطلب ليس حجزًا مؤكدًا.",nameLabel:"الاسم الكامل",phoneLabel:"الهاتف / واتساب",emailLabel:"البريد الإلكتروني (اختياري)",modalCityLabel:"مدينة الاستلام",modalPickupLabel:"تاريخ الاستلام",modalReturnLabel:"تاريخ الإرجاع",sendBtn:"إعداد الطلب",allCities:"كل المدن",noCars:"لا توجد سيارات تجريبية في هذه المدينة. اختر مدينة أخرى.",resultIntro:"انسخ الرسالة وأرسلها إلى مدير الموقع:",partnerSubject:"طلب الانضمام كشريك DANI",partnerText:"مرحبًا، أود عرض سياراتي على منصة DANI. يرجى التواصل معي.",whatsappNote:"النموذج لا يرسل البيانات تلقائيًا؛ بل يجهز رسالة لنسخها."},
-de:{
-tagline:"AUTOVERMIETUNG",carsNav:"Autos",howNav:"So funktioniert es",contactNav:"Kontakt",eyebrow:"Ihre Reise beginnt hier",headline:'Das richtige Auto.<br><span>Die richtige Reise.</span>',intro:"Entdecken Sie Autos lokaler Partner in Marokko und senden Sie einfach eine Mietanfrage.",cityLabel:"Stadt",pickupLabel:"Abholdatum",returnLabel:"Rückgabedatum",searchBtn:"Suchen",carsTitle:"Ausgewählte Autos",carsSub:"Beispiele — Verfügbarkeit bitte bestätigen.",perDay:"/ Tag",bookBtn:"Buchung anfragen",demoNote:"Demo-Version: Fahrzeuge und Preise sind fiktiv und nicht buchbar. Vor der Veröffentlichung echte Fahrzeuge mit Zustimmung der Eigentümer und bestätigten Preisen eintragen.",howTitle:"Einfach von Anfang bis Ende",howSub:"Eine schlanke erste Version zum Testen.",step1Title:"1. Auswählen",step1Text:"Autos nach Stadt und Datum filtern.",step2Title:"2. Anfrage senden",step2Text:"Kontaktdaten und Mietzeitraum angeben.",step3Title:"3. Bestätigen",step3Text:"Das Team prüft die Verfügbarkeit beim Eigentümer.",contactTitle:"Haben Sie Autos anzubieten?",contactText:"Werden Sie Vermietungspartner von DANI.",partnerBtn:"Partner werden",footerNote:"Demo-Prototyp",modalTitle:"Buchungsanfrage",modalDesc:"Hinterlassen Sie Ihre Kontaktdaten. Dies ist keine bestätigte Buchung.",nameLabel:"Vollständiger Name",phoneLabel:"Telefon / WhatsApp",emailLabel:"E-Mail (optional)",modalCityLabel:"Abholstadt",modalPickupLabel:"Abholdatum",modalReturnLabel:"Rückgabedatum",sendBtn:"Anfrage vorbereiten",allCities:"Alle Städte",noCars:"Keine Beispielautos in dieser Stadt. Bitte andere Stadt wählen.",resultIntro:"Kopieren Sie diese Nachricht und senden Sie sie an die Website-Verwaltung:",partnerSubject:"DANI-Partneranfrage",partnerText:"Hallo, ich möchte meine Autos auf DANI anbieten. Bitte kontaktieren Sie mich.",whatsappNote:"Das Formular sendet Ihre Daten nicht automatisch, sondern erstellt eine kopierbare Nachricht."},
-it:{
-tagline:"NOLEGGIO AUTO",carsNav:"Auto",howNav:"Come funziona",contactNav:"Contatti",eyebrow:"Il tuo viaggio inizia qui",headline:'L’auto giusta.<br><span>Il viaggio giusto.</span>',intro:"Scopri le auto offerte dai partner locali in Marocco e invia facilmente una richiesta di noleggio.",cityLabel:"Città",pickupLabel:"Data di ritiro",returnLabel:"Data di riconsegna",searchBtn:"Cerca",carsTitle:"Auto in evidenza",carsSub:"Esempi — disponibilità da confermare.",perDay:"/ giorno",bookBtn:"Richiedi prenotazione",demoNote:"Versione demo: auto e prezzi sono fittizi e non prenotabili. Prima della pubblicazione, inserisci veicoli reali con il consenso dei proprietari e conferma prezzi e disponibilità.",howTitle:"Semplice dall’inizio alla fine",howSub:"Una prima versione leggera per testare il progetto.",step1Title:"1. Scegli",step1Text:"Filtra le auto per città e date.",step2Title:"2. Invia una richiesta",step2Text:"Inserisci i contatti e il periodo di noleggio.",step3Title:"3. Conferma",step3Text:"Il team verifica la disponibilità con il proprietario.",contactTitle:"Hai auto da proporre?",contactText:"Entra nella rete DANI come partner di noleggio.",partnerBtn:"Diventa partner",footerNote:"Prototipo demo",modalTitle:"Richiesta di prenotazione",modalDesc:"Lascia i tuoi contatti. La richiesta non è una prenotazione confermata.",nameLabel:"Nome completo",phoneLabel:"Telefono / WhatsApp",emailLabel:"E-mail (facoltativa)",modalCityLabel:"Città di ritiro",modalPickupLabel:"Data di ritiro",modalReturnLabel:"Data di riconsegna",sendBtn:"Prepara richiesta",allCities:"Tutte le città",noCars:"Nessuna auto di esempio in questa città. Prova un’altra città.",resultIntro:"Copia il messaggio e invialo al gestore del sito:",partnerSubject:"Richiesta partner DANI",partnerText:"Salve, vorrei pubblicare le mie auto sulla piattaforma DANI. Contattatemi, per favore.",whatsappNote:"Il modulo non invia automaticamente i dati: prepara un messaggio da copiare."},
-nl:{
-tagline:"AUTOVERHUUR",carsNav:"Auto’s",howNav:"Hoe het werkt",contactNav:"Contact",eyebrow:"Uw reis begint hier",headline:'De juiste auto.<br><span>De juiste reis.</span>',intro:"Ontdek auto’s van lokale partners in Marokko en verstuur eenvoudig een huuraanvraag.",cityLabel:"Stad",pickupLabel:"Ophaaldatum",returnLabel:"Inleverdatum",searchBtn:"Zoeken",carsTitle:"Uitgelichte auto’s",carsSub:"Voorbeelden — beschikbaarheid moet worden bevestigd.",perDay:"/ dag",bookBtn:"Reservering aanvragen",demoNote:"Demoversie: auto’s en prijzen zijn fictief en niet boekbaar. Voeg vóór publicatie echte auto’s toe met toestemming van de eigenaren en bevestigde prijzen en beschikbaarheid.",howTitle:"Eenvoudig van begin tot eind",howSub:"Een lichte eerste versie om het idee te testen.",step1Title:"1. Kies",step1Text:"Filter auto’s op stad en gewenste datums.",step2Title:"2. Verstuur een aanvraag",step2Text:"Vul uw contactgegevens en huurperiode in.",step3Title:"3. Bevestig",step3Text:"Het team controleert de beschikbaarheid bij de eigenaar.",contactTitle:"Heeft u auto’s aan te bieden?",contactText:"Word verhuurpartner van DANI.",partnerBtn:"Partner worden",footerNote:"Demoprototype",modalTitle:"Reserveringsaanvraag",modalDesc:"Vul uw contactgegevens in. Dit is geen bevestigde reservering.",nameLabel:"Volledige naam",phoneLabel:"Telefoon / WhatsApp",emailLabel:"E-mail (optioneel)",modalCityLabel:"Ophaalstad",modalPickupLabel:"Ophaaldatum",modalReturnLabel:"Inleverdatum",sendBtn:"Aanvraag voorbereiden",allCities:"Alle steden",noCars:"Geen voorbeeldauto’s in deze stad. Probeer een andere stad.",resultIntro:"Kopieer dit bericht en stuur het naar de sitebeheerder:",partnerSubject:"DANI-partneraanvraag",partnerText:"Hallo, ik wil mijn auto’s op het DANI-platform aanbieden. Neem alstublieft contact met mij op.",whatsappNote:"Het formulier verstuurt uw gegevens niet automatisch, maar maakt een bericht om te kopiëren."},
-pt:{
-tagline:"ALUGUER DE CARROS",carsNav:"Carros",howNav:"Como funciona",contactNav:"Contacto",eyebrow:"A sua viagem começa aqui",headline:'O carro certo.<br><span>A viagem ideal.</span>',intro:"Descubra carros de parceiros locais em Marrocos e envie facilmente um pedido de aluguer.",cityLabel:"Cidade",pickupLabel:"Data de levantamento",returnLabel:"Data de devolução",searchBtn:"Pesquisar",carsTitle:"Carros em destaque",carsSub:"Exemplos — disponibilidade a confirmar.",perDay:"/ dia",bookBtn:"Pedir reserva",demoNote:"Versão de demonstração: carros e preços fictícios, sem possibilidade de reserva. Antes de publicar, adicione veículos reais com autorização dos proprietários e confirme preços e disponibilidade.",howTitle:"Simples do início ao fim",howSub:"Uma primeira versão leve para testar o projeto.",step1Title:"1. Escolha",step1Text:"Filtre os carros por cidade e datas.",step2Title:"2. Envie um pedido",step2Text:"Indique os seus contactos e o período de aluguer.",step3Title:"3. Confirme",step3Text:"A equipa verifica a disponibilidade com o proprietário.",contactTitle:"Tem carros para oferecer?",contactText:"Junte-se à rede DANI como parceiro de aluguer.",partnerBtn:"Tornar-me parceiro",footerNote:"Protótipo de demonstração",modalTitle:"Pedido de reserva",modalDesc:"Deixe os seus contactos. O pedido não é uma reserva confirmada.",nameLabel:"Nome completo",phoneLabel:"Telefone / WhatsApp",emailLabel:"E-mail (opcional)",modalCityLabel:"Cidade de levantamento",modalPickupLabel:"Data de levantamento",modalReturnLabel:"Data de devolução",sendBtn:"Preparar pedido",allCities:"Todas as cidades",noCars:"Não há carros de exemplo nesta cidade. Experimente outra cidade.",resultIntro:"Copie esta mensagem e envie-a ao gestor do site:",partnerSubject:"Pedido de parceria DANI",partnerText:"Olá, gostaria de anunciar os meus carros na plataforma DANI. Por favor, entre em contacto comigo.",whatsappNote:"O formulário não envia os dados automaticamente; prepara uma mensagem para copiar."},
-tr:{
-tagline:"ARAÇ KİRALAMA",carsNav:"Araçlar",howNav:"Nasıl çalışır",contactNav:"İletişim",eyebrow:"Yolculuğunuz burada başlıyor",headline:'Doğru araç.<br><span>Güzel bir yolculuk.</span>',intro:"Fas’taki yerel iş ortaklarının araçlarını keşfedin ve kolayca kiralama talebi gönderin.",cityLabel:"Şehir",pickupLabel:"Alış tarihi",returnLabel:"İade tarihi",searchBtn:"Ara",carsTitle:"Öne çıkan araçlar",carsSub:"Örnek ilanlar — müsaitlik teyit edilmelidir.",perDay:"/ gün",bookBtn:"Rezervasyon iste",demoNote:"Demo sürümü: araçlar ve fiyatlar örnektir, rezervasyon yapılamaz. Yayınlamadan önce araç sahiplerinin izniyle gerçek araçları ekleyin ve fiyatları doğrulayın.",howTitle:"Başından sonuna kolay",howSub:"Projeyi denemek için hafif bir ilk sürüm.",step1Title:"1. Seçin",step1Text:"Şehir ve tarihe göre araçları filtreleyin.",step2Title:"2. Talep gönderin",step2Text:"İletişim bilgilerinizi ve kiralama tarihlerini girin.",step3Title:"3. Onaylayın",step3Text:"Ekip, onaydan önce araç sahibinden müsaitliği kontrol eder.",contactTitle:"Araç mı sunmak istiyorsunuz?",contactText:"Kiralama ortağı olarak DANI ağına katılın.",partnerBtn:"Ortak olun",footerNote:"Demo prototipi",modalTitle:"Rezervasyon talebi",modalDesc:"İletişim bilgilerinizi bırakın. Bu talep kesin rezervasyon değildir.",nameLabel:"Ad soyad",phoneLabel:"Telefon / WhatsApp",emailLabel:"E-posta (isteğe bağlı)",modalCityLabel:"Teslim alma şehri",modalPickupLabel:"Alış tarihi",modalReturnLabel:"İade tarihi",sendBtn:"Talebi hazırla",allCities:"Tüm şehirler",noCars:"Bu şehirde örnek araç yok. Başka bir şehir deneyin.",resultIntro:"Bu mesajı kopyalayıp site yöneticisine gönderin:",partnerSubject:"DANI iş ortaklığı talebi",partnerText:"Merhaba, araçlarımı DANI platformunda listelemek istiyorum. Lütfen benimle iletişime geçin.",whatsappNote:"Form bilgilerinizi otomatik göndermez; kopyalanacak bir mesaj hazırlar."},
-zh:{
-tagline:"汽车租赁",carsNav:"车辆",howNav:"使用方式",contactNav:"联系",eyebrow:"旅程从这里开始",headline:'合适的汽车。<br><span>美好的旅程。</span>',intro:"探索摩洛哥本地合作伙伴提供的车辆，并轻松提交租车申请。",cityLabel:"城市",pickupLabel:"取车日期",returnLabel:"还车日期",searchBtn:"搜索",carsTitle:"精选车辆",carsSub:"展示示例——需确认车辆是否可用。",perDay:"/ 天",bookBtn:"申请预订",demoNote:"演示版本：车辆和价格均为虚构，不能实际预订。正式发布前，请在车主授权后添加真实车辆并确认价格和可用情况。",howTitle:"简单三步",howSub:"用于测试项目的轻量初版。",step1Title:"1. 选择",step1Text:"按城市和日期筛选车辆。",step2Title:"2. 提交申请",step2Text:"填写联系方式和租车日期。",step3Title:"3. 确认",step3Text:"团队会先向车主确认车辆可用情况。",contactTitle:"您有车辆可出租吗？",contactText:"加入 DANI 租车合作网络。",partnerBtn:"成为合作伙伴",footerNote:"演示原型",modalTitle:"预订申请",modalDesc:"请留下联系方式。此申请并非已确认的预订。",nameLabel:"姓名",phoneLabel:"电话 / WhatsApp",emailLabel:"电子邮箱（可选）",modalCityLabel:"取车城市",modalPickupLabel:"取车日期",modalReturnLabel:"还车日期",sendBtn:"准备申请",allCities:"所有城市",noCars:"该城市暂无示例车辆，请尝试其他城市。",resultIntro:"复制此消息并发送给网站管理员：",partnerSubject:"DANI 合作申请",partnerText:"您好，我希望在 DANI 平台发布我的车辆。请与我联系。",whatsappNote:"表单不会自动发送您的资料，而是生成可复制的消息。"},
-ru:{
-tagline:"АРЕНДА АВТО",carsNav:"Автомобили",howNav:"Как это работает",contactNav:"Контакты",eyebrow:"Ваше путешествие начинается здесь",headline:'Подходящий автомобиль.<br><span>Отличное путешествие.</span>',intro:"Выбирайте автомобили местных партнёров в Марокко и отправляйте заявку на аренду.",cityLabel:"Город",pickupLabel:"Дата получения",returnLabel:"Дата возврата",searchBtn:"Поиск",carsTitle:"Популярные автомобили",carsSub:"Примеры — наличие нужно подтвердить.",perDay:"/ день",bookBtn:"Запросить бронирование",demoNote:"Демонстрационная версия: автомобили и цены вымышлены, бронирование недоступно. Перед публикацией добавьте реальные автомобили с разрешения владельцев и подтвердите цены и наличие.",howTitle:"Просто от начала до конца",howSub:"Лёгкая первая версия для проверки идеи.",step1Title:"1. Выберите",step1Text:"Фильтруйте автомобили по городу и датам.",step2Title:"2. Отправьте запрос",step2Text:"Укажите контакты и период аренды.",step3Title:"3. Подтвердите",step3Text:"Команда проверит наличие у владельца.",contactTitle:"Есть автомобили для аренды?",contactText:"Станьте партнёром DANI.",partnerBtn:"Стать партнёром",footerNote:"Демонстрационный прототип",modalTitle:"Запрос на бронирование",modalDesc:"Оставьте контактные данные. Это не подтверждённое бронирование.",nameLabel:"Полное имя",phoneLabel:"Телефон / WhatsApp",emailLabel:"Электронная почта (необязательно)",modalCityLabel:"Город получения",modalPickupLabel:"Дата получения",modalReturnLabel:"Дата возврата",sendBtn:"Подготовить запрос",allCities:"Все города",noCars:"В этом городе нет демонстрационных автомобилей. Выберите другой город.",resultIntro:"Скопируйте сообщение и отправьте администратору сайта:",partnerSubject:"Заявка партнёра DANI",partnerText:"Здравствуйте! Я хочу разместить свои автомобили на платформе DANI. Свяжитесь со мной, пожалуйста.",whatsappNote:"Форма не отправляет данные автоматически, а подготавливает сообщение для копирования."},
-ja:{
-tagline:"レンタカー",carsNav:"車を探す",howNav:"ご利用方法",contactNav:"お問い合わせ",eyebrow:"旅はここから始まります",headline:'ぴったりの車。<br><span>素敵な旅。</span>',intro:"モロッコの地域パートナーが提供する車を見つけ、簡単にレンタルを申し込めます。",cityLabel:"都市",pickupLabel:"受取日",returnLabel:"返却日",searchBtn:"検索",carsTitle:"おすすめの車",carsSub:"掲載例 — 空き状況の確認が必要です。",perDay:"/ 日",bookBtn:"予約をリクエスト",demoNote:"デモ版：車と料金は架空のため予約できません。公開前に所有者の許可を得た実車を登録し、料金と空き状況を確認してください。",howTitle:"簡単な手順",howSub:"プロジェクトを試すための初期版です。",step1Title:"1. 選ぶ",step1Text:"都市と希望日で車を絞り込みます。",step2Title:"2. 申し込む",step2Text:"連絡先とレンタル期間を入力します。",step3Title:"3. 確認する",step3Text:"担当者が所有者に空き状況を確認します。",contactTitle:"貸し出せる車をお持ちですか？",contactText:"DANIのレンタルパートナーに参加しましょう。",partnerBtn:"パートナーになる",footerNote:"デモプロトタイプ",modalTitle:"予約リクエスト",modalDesc:"連絡先を入力してください。予約はまだ確定していません。",nameLabel:"氏名",phoneLabel:"電話 / WhatsApp",emailLabel:"メール（任意）",modalCityLabel:"受取都市",modalPickupLabel:"受取日",modalReturnLabel:"返却日",sendBtn:"申込内容を準備",allCities:"すべての都市",noCars:"この都市には掲載例がありません。別の都市をお試しください。",resultIntro:"このメッセージをコピーしてサイト管理者に送信してください：",partnerSubject:"DANIパートナー申請",partnerText:"こんにちは。DANIに自分の車を掲載したいです。ご連絡ください。",whatsappNote:"フォームは情報を自動送信せず、コピー用メッセージを作成します。"},
-pl:{
-tagline:"WYNAJEM SAMOCHODÓW",carsNav:"Samochody",howNav:"Jak to działa",contactNav:"Kontakt",eyebrow:"Twoja podróż zaczyna się tutaj",headline:'Właściwy samochód.<br><span>Udana podróż.</span>',intro:"Poznaj samochody lokalnych partnerów w Maroku i łatwo wyślij zapytanie o wynajem.",cityLabel:"Miasto",pickupLabel:"Data odbioru",returnLabel:"Data zwrotu",searchBtn:"Szukaj",carsTitle:"Polecane samochody",carsSub:"Przykłady — dostępność wymaga potwierdzenia.",perDay:"/ dzień",bookBtn:"Poproś o rezerwację",demoNote:"Wersja demonstracyjna: samochody i ceny są fikcyjne i nie można ich zarezerwować. Przed publikacją dodaj prawdziwe pojazdy za zgodą właścicieli i potwierdź ceny oraz dostępność.",howTitle:"Prosto od początku do końca",howSub:"Lekka pierwsza wersja do przetestowania projektu.",step1Title:"1. Wybierz",step1Text:"Filtruj samochody według miasta i dat.",step2Title:"2. Wyślij zapytanie",step2Text:"Podaj dane kontaktowe i okres wynajmu.",step3Title:"3. Potwierdź",step3Text:"Zespół sprawdzi dostępność u właściciela.",contactTitle:"Masz samochody do wynajęcia?",contactText:"Dołącz do sieci partnerów DANI.",partnerBtn:"Zostań partnerem",footerNote:"Prototyp demonstracyjny",modalTitle:"Zapytanie o rezerwację",modalDesc:"Podaj dane kontaktowe. To nie jest potwierdzona rezerwacja.",nameLabel:"Imię i nazwisko",phoneLabel:"Telefon / WhatsApp",emailLabel:"E-mail (opcjonalnie)",modalCityLabel:"Miasto odbioru",modalPickupLabel:"Data odbioru",modalReturnLabel:"Data zwrotu",sendBtn:"Przygotuj zapytanie",allCities:"Wszystkie miasta",noCars:"Brak przykładowych samochodów w tym mieście. Wybierz inne miasto.",resultIntro:"Skopiuj tę wiadomość i wyślij ją administratorowi strony:",partnerSubject:"Zgłoszenie partnera DANI",partnerText:"Dzień dobry, chcę dodać swoje samochody na platformie DANI. Proszę o kontakt.",whatsappNote:"Formularz nie wysyła danych automatycznie; przygotowuje wiadomość do skopiowania."},
-sv:{
-tagline:"BILUTHYRNING",carsNav:"Bilar",howNav:"Så fungerar det",contactNav:"Kontakt",eyebrow:"Din resa börjar här",headline:'Rätt bil.<br><span>Rätt resa.</span>',intro:"Upptäck bilar från lokala partner i Marocko och skicka enkelt en hyrförfrågan.",cityLabel:"Stad",pickupLabel:"Hämtningsdatum",returnLabel:"Återlämningsdatum",searchBtn:"Sök",carsTitle:"Utvalda bilar",carsSub:"Exempel — tillgänglighet måste bekräftas.",perDay:"/ dag",bookBtn:"Begär bokning",demoNote:"Demoversion: bilarna och priserna är fiktiva och kan inte bokas. Lägg till riktiga fordon med ägarnas tillstånd och bekräftade priser innan publicering.",howTitle:"Enkelt från början till slut",howSub:"En lätt första version för att testa projektet.",step1Title:"1. Välj",step1Text:"Filtrera bilar efter stad och datum.",step2Title:"2. Skicka en förfrågan",step2Text:"Ange kontaktuppgifter och hyresperiod.",step3Title:"3. Bekräfta",step3Text:"Teamet kontrollerar tillgängligheten med ägaren.",contactTitle:"Har du bilar att erbjuda?",contactText:"Bli uthyrningspartner till DANI.",partnerBtn:"Bli partner",footerNote:"Demoprototyp",modalTitle:"Bokningsförfrågan",modalDesc:"Lämna dina kontaktuppgifter. Detta är ingen bekräftad bokning.",nameLabel:"Fullständigt namn",phoneLabel:"Telefon / WhatsApp",emailLabel:"E-post (valfritt)",modalCityLabel:"Hämtningsstad",modalPickupLabel:"Hämtningsdatum",modalReturnLabel:"Återlämningsdatum",sendBtn:"Förbered förfrågan",allCities:"Alla städer",noCars:"Inga exempelbilar i denna stad. Prova en annan stad.",resultIntro:"Kopiera meddelandet och skicka det till webbplatsens administratör:",partnerSubject:"DANI-partnerförfrågan",partnerText:"Hej, jag vill lägga upp mina bilar på DANI-plattformen. Kontakta mig gärna.",whatsappNote:"Formuläret skickar inte uppgifterna automatiskt utan skapar ett meddelande att kopiera."},
-ko:{
-tagline:"자동차 렌트",carsNav:"차량",howNav:"이용 방법",contactNav:"문의",eyebrow:"여행은 여기서 시작됩니다",headline:'알맞은 자동차.<br><span>멋진 여행.</span>',intro:"모로코 현지 파트너가 제공하는 차량을 확인하고 간편하게 렌트 요청을 보내세요.",cityLabel:"도시",pickupLabel:"픽업 날짜",returnLabel:"반납 날짜",searchBtn:"검색",carsTitle:"추천 차량",carsSub:"예시 목록 — 이용 가능 여부를 확인해야 합니다.",perDay:"/ 일",bookBtn:"예약 요청",demoNote:"데모 버전: 차량과 가격은 가상이며 예약할 수 없습니다. 공개 전 소유자의 허가를 받은 실제 차량을 등록하고 가격과 이용 가능 여부를 확인하세요.",howTitle:"처음부터 끝까지 간편하게",howSub:"프로젝트 테스트를 위한 간단한 초기 버전입니다.",step1Title:"1. 선택",step1Text:"도시와 날짜로 차량을 필터링하세요.",step2Title:"2. 요청 보내기",step2Text:"연락처와 렌트 기간을 입력하세요.",step3Title:"3. 확인",step3Text:"팀이 소유자에게 이용 가능 여부를 확인합니다.",contactTitle:"제공할 차량이 있으신가요?",contactText:"DANI 렌트 파트너 네트워크에 가입하세요.",partnerBtn:"파트너 되기",footerNote:"데모 프로토타입",modalTitle:"예약 요청",modalDesc:"연락처를 입력하세요. 아직 확정된 예약이 아닙니다.",nameLabel:"성명",phoneLabel:"전화 / WhatsApp",emailLabel:"이메일(선택)",modalCityLabel:"픽업 도시",modalPickupLabel:"픽업 날짜",modalReturnLabel:"반납 날짜",sendBtn:"요청 준비",allCities:"모든 도시",noCars:"이 도시에 예시 차량이 없습니다. 다른 도시를 선택하세요.",resultIntro:"이 메시지를 복사해 사이트 관리자에게 보내세요:",partnerSubject:"DANI 파트너 신청",partnerText:"안녕하세요. DANI 플랫폼에 제 차량을 등록하고 싶습니다. 연락 부탁드립니다.",whatsappNote:"양식은 정보를 자동 전송하지 않고 복사할 메시지를 준비합니다."}
-});
-
-let currentCar=null, partnerMode=false;
-const $=s=>document.querySelector(s);
-function setLang(lang){document.documentElement.lang=lang;document.documentElement.dir=(lang==="ar"?"rtl":"ltr");document.querySelectorAll("[data-i]").forEach(el=>{const k=el.dataset.i;if(translations[lang][k] || translations.en[k])el.innerHTML=translations[lang][k] || translations.en[k]});$("#tagline").textContent=translations[lang].tagline || translations.en.tagline;$("#modalTitle").textContent=translations[lang].modalTitle || translations.en.modalTitle;$("#modalDesc").textContent=translations[lang].modalDesc || translations.en.modalDesc;const city=$("#city");city.options[0].text=translations[lang].allCities || translations.en.allCities;$("#footerText").textContent="Location de voitures · Rent a car · Alquiler de coches";}
-$("#language").addEventListener("change",e=>setLang(e.target.value));
-setLang($("#language").value);
-$("#searchForm").addEventListener("submit",e=>{e.preventDefault();const city=$("#city").value;let count=0;document.querySelectorAll(".car").forEach(card=>{const show=!city||card.dataset.city===city;card.style.display=show?"":"none";if(show)count++});if(!count)alert(translations[$("#language").value].noCars)});
-function openModal(car,city){currentCar=car;partnerMode=false;$("#modalTitle").textContent=translations[$("#language").value].modalTitle+" — "+car;$("#modalCity").value=city||$("#city").value;$("#modalPickup").value=$("#pickup").value;$("#modalReturn").value=$("#return").value;$("#formResult").textContent="";$("#bookingForm").style.display="block";$("#bookingModal").classList.add("open")}
-document.querySelectorAll(".rent").forEach(b=>b.addEventListener("click",()=>openModal(b.dataset.car,b.dataset.city)));
-$("#closeModal").addEventListener("click",()=>$("#bookingModal").classList.remove("open"));
-$("#bookingModal").addEventListener("click",e=>{if(e.target.id==="bookingModal")$("#bookingModal").classList.remove("open")});
-$("#bookingForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const result=$("#formResult");
-  const pickup=$("#modalPickup").value;
-  const ret=$("#modalReturn").value;
-  if(!pickup || !ret){
-    result.textContent = "Veuillez choisir les dates de départ et de retour.";
-    result.style.color = "#b42318";
-    return;
-  }
-  if(ret <= pickup){
-    result.textContent = "La date de retour doit être après la date de départ.";
-    result.style.color = "#b42318";
-    return;
-  }
-  // Vérification locale : avertit si un séjour chevauche une réservation déjà confirmée pour la même voiture.
-  let existingBookings=[];
-  try {
-    const saved=JSON.parse(localStorage.getItem("dani_local_bookings_v1")||"[]");
-    existingBookings=Array.isArray(saved)?saved:[];
-  } catch(err) { existingBookings=[]; }
-  const overlap=existingBookings.find(b =>
-    b.status==="Confirmé" &&
-    String(b.car||"").trim().toLowerCase()===String(currentCar||"-").trim().toLowerCase() &&
-    pickup < b.returnDate && ret > b.pickup
-  );
-  if(overlap){
-    result.textContent="Cette voiture semble déjà réservée sur une partie de ces dates. Choisissez d’autres dates ou contactez le gestionnaire.";
-    result.style.color="#b42318";
-    return;
-  }
-  const booking={
-    id:"booking-"+Date.now(),car:currentCar||"-",
-    name:$("#name").value.trim(),phone:$("#phone").value.trim(),
-    email:$("#email").value.trim(),city:$("#modalCity").value,
-    pickup,returnDate:ret,status:"Nouveau",createdAt:new Date().toLocaleString()
-  };
-  try {
-    const list=JSON.parse(localStorage.getItem("dani_local_bookings_v1")||"[]");
-    list.push(booking);localStorage.setItem("dani_local_bookings_v1",JSON.stringify(list));
-    renderBookingAdmin();
-  } catch(err) {
-    result.textContent="Demande préparée, mais le navigateur n’a pas permis de l’enregistrer localement.";
-  }
-  const lang=$("#language").value;
-  const requestId="DANI-"+Date.now().toString().slice(-8);
-  const msg=`🚗 DANI — NOUVELLE DEMANDE DE RÉSERVATION
-
-Bonjour, vous avez reçu une nouvelle demande de réservation sur DANI.
-
-Référence : ${requestId}
-Véhicule demandé : ${currentCar || "-"}
-Ville de prise en charge : ${$("#modalCity").value}
-Date de départ : ${pickup}
-Date de retour : ${ret}
-
-Coordonnées du client
-Nom complet : ${$("#name").value.trim()}
-Téléphone / WhatsApp : ${$("#phone").value.trim()}
-E-mail : ${$("#email").value.trim()||"Non renseigné"}
-
-Statut : DEMANDE REÇUE — RÉSERVATION NON CONFIRMÉE.
-
-Merci de vérifier la disponibilité du véhicule et de contacter le client pour confirmer les modalités.
-
-DANI — Location de voitures au Maroc`;
-  result.style.color = "#142033";
-  result.innerHTML = `<b>${translations[lang].resultIntro}</b><textarea id="copyMsg" readonly aria-label="Message complet de réservation DANI, prêt à envoyer" style="display:block;width:100%;height:320px;max-height:45vh;box-sizing:border-box;margin-top:10px;padding:14px;border:1px solid #ddd;border-radius:10px;background:#f8fafc;color:#142033;font:16px/1.5 Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;resize:none;overflow-y:auto"></textarea><button type="button" class="btn" id="copyBtn" style="margin-top:8px">Copier le message</button><button type="button" class="btn dark" id="whatsappBtn" style="margin-top:8px">Envoyer via WhatsApp</button><p>Le message complet est préparé automatiquement. La zone ci-dessus sert à le lire et à le copier ; elle n’est pas modifiable. WhatsApp s’ouvrira avec le texte déjà rempli : appuyez sur Envoyer dans WhatsApp pour le transmettre.</p><p>${translations[lang].whatsappNote}</p>`;
-  $("#copyMsg").value=msg;
-  $("#whatsappBtn").addEventListener("click", ()=>{
-    const waUrl = "https://wa.me/" + getDaniWhatsappReceiver() + "?text=" + encodeURIComponent(msg);
-    window.location.href = waUrl;
-  });
-  $("#copyBtn").addEventListener("click", async ()=>{
-    const box=$("#copyMsg");
-    try {
-      if(navigator.clipboard && window.isSecureContext){
-        await navigator.clipboard.writeText(msg);
-        $("#copyBtn").textContent="Copié";
-      } else {
-        box.focus();
-        box.select();
-        const copied=document.execCommand("copy");
-        $("#copyBtn").textContent=copied ? "Copié" : "Sélectionnez le texte puis copiez-le";
-      }
-    } catch(err) {
-      box.focus();
-      box.select();
-      $("#copyBtn").textContent="Sélectionnez le texte puis copiez-le";
+    async function loadCars() {
+        const { data: cars, error } = await supabaseClient.from('cars').select('*');
+        if (error) { console.error(error); return; }
+        const container = document.getElementById('cars-container');
+        const select = document.getElementById('selectedCar');
+        container.innerHTML = '';
+        if (cars.length === 0) {
+            container.innerHTML = '<p>Aucune voiture disponible pour le moment.</p>';
+            return;
+        }
+        cars.forEach(car => {
+            container.innerHTML += `<div class="car-card"><div class="car-art">🚗</div><div class="car-body"><h3>${car.name}</h3><div class="car-price">${car.price} MAD / jour</div></div></div>`;
+            select.innerHTML += `<option value="${car.id}">${car.name} - ${car.price} MAD</option>`;
+        });
     }
-  });
-});
-$("#partnerBtn").addEventListener("click",()=>{const msg=translations[$("#language").value].partnerText;$("#modalTitle").textContent=translations[$("#language").value].partnerSubject;$("#modalDesc").textContent=msg;$("#bookingForm").style.display="none";$("#formResult").innerHTML=`<textarea id="partnerMsg" style="width:100%;height:90px;padding:10px;border:1px solid #ddd;border-radius:8px"></textarea><button class="btn" id="copyPartner" style="margin-top:10px">Copier</button>`;$("#partnerMsg").value=msg;$("#copyPartner").onclick=()=>navigator.clipboard?.writeText(msg);$("#bookingModal").classList.add("open")});
-const today=new Date().toISOString().slice(0,10);$("#pickup").min=today;$("#modalPickup").min=today;$("#pickup").addEventListener("change",()=>{$("#return").min=$("#pickup").value;$("#modalPickup").value=$("#pickup").value;$("#modalReturn").min=$("#pickup").value});$("#return").addEventListener("change",()=>{
-  $("#modalReturn").value=$("#return").value;
-  if($("#pickup").value && $("#return").value && $("#return").value <= $("#pickup").value){
-    $("#return").setCustomValidity("La date de retour doit être après la date de départ.");
-  } else {
-    $("#return").setCustomValidity("");
-  }
-});
-$("#modalReturn").addEventListener("change",()=>{
-  if($("#modalPickup").value && $("#modalReturn").value && $("#modalReturn").value <= $("#modalPickup").value){
-    $("#modalReturn").setCustomValidity("La date de retour doit être après la date de départ.");
-  } else {
-    $("#modalReturn").setCustomValidity("");
-  }
-});
 
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const bookingData = {
+            customer_name: document.getElementById('customerName').value,
+            phone: document.getElementById('customerPhone').value,
+            car_id: document.getElementById('selectedCar').value,
+            start_date: document.getElementById('startDate').value,
+            end_date: document.getElementById('endDate').value,
+            status: 'nouveau'
+        };
+        const { data, error } = await supabaseClient.from('bookings').insert([bookingData]);
+        if (error) {
+            alert("Erreur: " + error.message);
+        } else {
+            document.getElementById('bookingForm').reset();
+            document.getElementById('successMessage').classList.remove('hidden');
+            const phone = '212623406676';
+            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je veux réserver une voiture du ${bookingData.start_date} au ${bookingData.end_date}.`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    });
 
-// Paramètre local de réception WhatsApp pour la démonstration.
-const DANI_WA_KEY="dani_demo_whatsapp_receiver";
-function getDaniWhatsappReceiver(){
- const stored=(localStorage.getItem(DANI_WA_KEY)||WHATSAPP_RECEIVER).replace(/\\D/g,"");
- return stored;
-}
-const waSettingsForm=document.querySelector("#whatsappSettingsForm");
-const waSettingsInput=document.querySelector("#ownerWhatsapp");
-const waSettingsResult=document.querySelector("#whatsappSettingsResult");
-waSettingsInput.value=getDaniWhatsappReceiver();
-document.querySelector("#testWhatsappBtn").addEventListener("click",()=>{
- const number=getDaniWhatsappReceiver();
- const testMessage="Bonjour, ceci est un message de test pour la réception des demandes de réservation DANI.";
- window.location.href="https://wa.me/"+number+"?text="+encodeURIComponent(testMessage);
-});
-waSettingsForm.addEventListener("submit",e=>{
- e.preventDefault();
- const number=waSettingsInput.value.replace(/\\D/g,"");
- if(number.length<10||number.length>15){waSettingsResult.textContent="Vérifiez le numéro international (10 à 15 chiffres).";return;}
- localStorage.setItem(DANI_WA_KEY,number);
- waSettingsInput.value=number;
- waSettingsResult.textContent="Numéro enregistré pour cette démonstration.";
-});
-
-// Sauvegarde et restauration locale des données DANI.
-document.querySelector("#downloadDaniBackup").addEventListener("click",()=>{
- const payload={
-  format:"DANI_LOCAL_BACKUP",
-  version:1,
-  exportedAt:new Date().toISOString(),
-  vehicles:(()=>{try{const x=JSON.parse(localStorage.getItem(DANI_LOCAL_CARS_KEY)||"[]");return Array.isArray(x)?x:[]}catch(e){return []}})(),
-  bookings:readBookings(),
-  whatsappReceiver:getDaniWhatsappReceiver()
- };
- const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download="DANI-sauvegarde-"+new Date().toISOString().slice(0,10)+".json";
- document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
- document.querySelector("#backupStatus").textContent="Sauvegarde téléchargée. Conservez ce fichier en lieu sûr.";
-});
-document.querySelector("#restoreDaniBackupBtn").addEventListener("click",async()=>{
- const status=document.querySelector("#backupStatus");
- const file=document.querySelector("#restoreDaniBackup").files[0];
- if(!file){status.textContent="Choisissez d’abord un fichier de sauvegarde JSON.";return;}
- if(!confirm("La restauration remplacera les annonces et demandes locales actuelles. Continuer ?"))return;
- try{
-  const data=JSON.parse(await file.text());
-  if(data.format!=="DANI_LOCAL_BACKUP"||data.version!==1||!Array.isArray(data.vehicles)||!Array.isArray(data.bookings)){
-   status.textContent="Fichier invalide ou incompatible avec cette version de DANI.";return;
-  }
-  if(!data.bookings.every(b=>b&&typeof b==="object")||!data.vehicles.every(v=>v&&typeof v==="object")){
-   status.textContent="Le fichier contient des données invalides.";return;
-  }
-  localStorage.setItem(DANI_LOCAL_CARS_KEY,JSON.stringify(data.vehicles));
-  localStorage.setItem("dani_local_bookings_v1",JSON.stringify(data.bookings));
-  if(typeof data.whatsappReceiver==="string"&&/^\d{10,15}$/.test(data.whatsappReceiver)){
-   localStorage.setItem(DANI_WA_KEY,data.whatsappReceiver);
-  }
-  status.textContent="Sauvegarde restaurée. Rechargez la page pour afficher les annonces restaurées.";
- }catch(err){status.textContent="Impossible de lire cette sauvegarde. Vérifiez le fichier JSON.";}
-});
-
-// Gestion locale des demandes : aucun champ de commission ou de virement.
-function readBookings(){
- try{const data=JSON.parse(localStorage.getItem("dani_local_bookings_v1")||"[]");return Array.isArray(data)?data:[]}catch(e){return []}
-}
-function renderBookingAdmin(){
- const host=document.querySelector("#bookingAdminList");if(!host)return;
- const allBookings=readBookings();
- const stats=document.querySelector("#bookingStats");
- const countStatus=s=>allBookings.filter(b=>b.status===s).length;
- stats.innerHTML="";
- [["Total",allBookings.length],["Nouveau",countStatus("Nouveau")],["Confirmé",countStatus("Confirmé")],["Annulé",countStatus("Annulé")]].forEach(([label,value])=>{
-  const tile=document.createElement("div");tile.style.cssText="padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card)";
-  const t=document.createElement("div");t.style.cssText="font-size:13px;color:var(--muted)";t.textContent=label;
-  const v=document.createElement("strong");v.style.cssText="display:block;font-size:26px;margin-top:4px";v.textContent=String(value);
-  tile.append(t,v);stats.appendChild(tile);
- });
- const term=(document.querySelector("#bookingSearch").value||"").trim().toLowerCase();
- const status=(document.querySelector("#bookingStatusFilter").value||"");
- const bookings=allBookings.filter(b=>(!status||b.status===status)&&(!term||[b.id,b.car,b.name,b.phone,b.email,b.city].some(v=>String(v||"").toLowerCase().includes(term))));
- if(!allBookings.length){host.innerHTML="<p>Aucune demande enregistrée pour le moment.</p>";return;}
- if(!bookings.length){host.innerHTML="<p>Aucune demande ne correspond à votre recherche.</p>";return;}
- host.innerHTML="";
- bookings.slice().reverse().forEach(b=>{
-  const card=document.createElement("div");card.className="step";card.style.marginBottom="12px";
-  const title=document.createElement("h3");title.textContent=b.car+" — "+b.name;
-  const details=document.createElement("p");details.textContent="Téléphone : "+b.phone+" | Ville : "+b.city+" | Du "+b.pickup+" au "+b.returnDate+" | Créée : "+b.createdAt;
-  const email=document.createElement("p");email.textContent="E-mail : "+(b.email||"—");
-  const label=document.createElement("label");label.textContent="État de la demande";
-  const select=document.createElement("select");["Nouveau","Confirmé","Annulé"].forEach(s=>{const o=document.createElement("option");o.value=s;o.textContent=s;o.selected=b.status===s;select.appendChild(o)});
-  select.addEventListener("change",()=>{const all=readBookings();const x=all.find(v=>v.id===b.id);if(x){x.status=select.value;localStorage.setItem("dani_local_bookings_v1",JSON.stringify(all));renderBookingAdmin();}});
-  const del=document.createElement("button");del.type="button";del.className="btn";del.textContent="Supprimer la demande";del.style.marginTop="8px";
-  del.addEventListener("click",()=>{if(confirm("Supprimer cette demande enregistrée sur ce navigateur ?")){localStorage.setItem("dani_local_bookings_v1",JSON.stringify(readBookings().filter(x=>x.id!==b.id)));renderBookingAdmin();}});
-  card.append(title,details,email,label,select,del);host.appendChild(card);
- });
-}
-document.querySelector("#bookingSearch").addEventListener("input",renderBookingAdmin);
-document.querySelector("#bookingStatusFilter").addEventListener("change",renderBookingAdmin);
-document.querySelector("#exportBookingsBtn").addEventListener("click",()=>{
- const rows=[["ID","Voiture","Nom","Téléphone","E-mail","Ville","Départ","Retour","Statut","Créée"],...readBookings().map(b=>[b.id,b.car,b.name,b.phone,b.email,b.city,b.pickup,b.returnDate,b.status,b.createdAt])];
- const csv=rows.map(r=>r.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",")).join("\r\n");
- const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8"});
- const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="dani-demandes-reservation.csv";a.click();URL.revokeObjectURL(url);
-});
-document.querySelector("#clearBookingsBtn").addEventListener("click",()=>{
- if(confirm("Effacer toutes les demandes enregistrées dans ce navigateur ?")){localStorage.removeItem("dani_local_bookings_v1");renderBookingAdmin();}
-});
-renderBookingAdmin();
-
-// Ajout de véhicules de démonstration. Aucune commission ni aucun transfert n'est enregistré.
-const DANI_LOCAL_CARS_KEY="dani_local_demo_cars_v2";
-const photoInput=document.querySelector("#newCarPhoto");
-const photoPreview=document.querySelector("#newCarPhotoPreview");
-let pendingCarPhoto="";
-photoInput.addEventListener("change",()=>{
- const file=photoInput.files&&photoInput.files[0];pendingCarPhoto="";photoPreview.innerHTML="";
- if(!file)return;
- if(!file.type.startsWith("image/")){photoPreview.textContent="Choisissez une image.";photoInput.value="";return;}
- const reader=new FileReader();
- reader.onload=()=>{pendingCarPhoto=String(reader.result||"");const img=document.createElement("img");img.src=pendingCarPhoto;img.alt="Aperçu du véhicule";img.style.cssText="display:block;max-width:100%;max-height:220px;object-fit:contain;border-radius:12px;border:1px solid var(--line)";photoPreview.appendChild(img);};
- reader.readAsDataURL(file);
-});
-
-function addVehicleCard(car){
- const grid=document.querySelector("#carGrid");
- const card=document.createElement("article");
- card.className="car"; card.dataset.city=car.city; card.dataset.localCar=car.id;
- card.innerHTML='<div class="car-art">🚗</div><div class="car-body"><h3></h3><div class="meta"><span class="city"></span><span class="gear"></span><span class="fuel"></span></div><div class="price"></div><button type="button" class="btn dark rent"></button></div>';
- if(car.photo){const art=card.querySelector(".car-art");art.textContent="";const img=document.createElement("img");img.src=car.photo;img.alt=car.name;img.style.cssText="width:100%;height:100%;object-fit:cover";art.appendChild(img);}
- card.querySelector("h3").textContent=car.name;
- card.querySelector(".city").textContent="📍 "+car.city;
- card.querySelector(".gear").textContent="⚙️ "+car.gear;
- card.querySelector(".fuel").textContent="⛽ "+car.fuel;
- card.querySelector(".price").textContent=car.price+" MAD / jour";
- const b=card.querySelector("button");
- b.textContent=(translations[document.querySelector("#language").value]||translations.en).bookBtn;
- b.addEventListener("click",()=>openModal(car.name,car.city));
- const tools=document.createElement("div");
- tools.style.cssText="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap";
- const edit=document.createElement("button");
- edit.type="button";edit.className="btn";edit.textContent="Modifier";edit.style.flex="1";
- edit.addEventListener("click",()=>editDaniCar(car.id));
- const del=document.createElement("button");
- del.type="button";del.className="btn";del.textContent="Supprimer";del.style.flex="1";
- del.style.background="#a93226";del.style.color="#fff";
- del.addEventListener("click",()=>deleteDaniCar(car.id));
- tools.append(edit,del);card.querySelector(".car-body").appendChild(tools);
- grid.appendChild(card);
- return card;
-}
-function getDaniCars(){
- try{const v=JSON.parse(localStorage.getItem(DANI_LOCAL_CARS_KEY)||"[]");return Array.isArray(v)?v:[]}catch(e){return []}
-}
-function saveDaniCars(cars){localStorage.setItem(DANI_LOCAL_CARS_KEY,JSON.stringify(cars))}
-function refreshDaniCar(car){
- const old=document.querySelector('[data-local-car="'+car.id+'"]');
- if(old)old.remove();
- addVehicleCard(car);
-}
-function editDaniCar(id){
- const cars=getDaniCars();const car=cars.find(c=>c.id===id);if(!car)return;
- const name=prompt("Nom du véhicule :",car.name);if(name===null)return;
- const city=prompt("Ville (Casablanca, Marrakech, Agadir, Tanger, Rabat) :",car.city);if(city===null)return;
- const price=prompt("Prix par jour en MAD :",String(car.price));if(price===null)return;
- const gear=prompt("Transmission (Manuelle ou Automatique) :",car.gear);if(gear===null)return;
- const fuel=prompt("Carburant (Essence, Diesel, Hybride, Électrique) :",car.fuel);if(fuel===null)return;
- if(!name.trim()||!Number.isFinite(Number(price))||Number(price)<1){alert("Nom ou prix invalide. Réessayez.");return;}
- car.name=name.trim();car.city=city.trim()||car.city;car.price=Number(price);car.gear=gear.trim()||car.gear;car.fuel=fuel.trim()||car.fuel;
- try{saveDaniCars(cars);refreshDaniCar(car);document.querySelector("#addCarResult").textContent="Véhicule modifié.";}
- catch(e){alert("Impossible d’enregistrer la modification dans le navigateur.");}
-}
-function deleteDaniCar(id){
- const car=getDaniCars().find(c=>c.id===id);if(!car)return;
- if(!confirm("Supprimer l’annonce « "+car.name+" » ?"))return;
- const cars=getDaniCars().filter(c=>c.id!==id);
- try{saveDaniCars(cars);const card=document.querySelector('[data-local-car="'+id+'"]');if(card)card.remove();document.querySelector("#addCarResult").textContent="Véhicule supprimé.";}
- catch(e){alert("Impossible de supprimer cette annonce.");}
-}
-function loadDaniLocalCars(){
- let cars=[];
- try{cars=JSON.parse(localStorage.getItem(DANI_LOCAL_CARS_KEY)||"[]")}catch(e){}
- if(Array.isArray(cars)) cars.forEach(car=>{
-   if(!document.querySelector('[data-local-car="'+car.id+'"]')) addVehicleCard(car);
- });
-}
-document.querySelector("#addCarForm").addEventListener("submit",function(e){
- e.preventDefault();
- const car={id:"dani-"+Date.now(),name:document.querySelector("#newCarName").value.trim(),city:document.querySelector("#newCarCity").value,price:Number(document.querySelector("#newCarPrice").value),gear:document.querySelector("#newCarGear").value,fuel:document.querySelector("#newCarFuel").value,photo:pendingCarPhoto};
- if(!car.name||!Number.isFinite(car.price)||car.price<1){document.querySelector("#addCarResult").textContent="Vérifiez le nom et le prix.";return;}
- // Add visibly first, so it works even when browser storage is restricted.
- const card=addVehicleCard(car);
- let cars=[];
- try{cars=JSON.parse(localStorage.getItem(DANI_LOCAL_CARS_KEY)||"[]");if(!Array.isArray(cars))cars=[];cars.push(car);localStorage.setItem(DANI_LOCAL_CARS_KEY,JSON.stringify(cars));}
- catch(err){document.querySelector("#addCarResult").textContent="Véhicule ajouté à l’écran. Attention : ce navigateur ne permet pas de le conserver après fermeture.";this.reset();card.scrollIntoView({behavior:"smooth",block:"center"});return;}
- document.querySelector("#addCarResult").textContent="Véhicule ajouté. Faites défiler la liste des voitures pour le voir.";
- this.reset();pendingCarPhoto="";photoPreview.innerHTML="";
- card.scrollIntoView({behavior:"smooth",block:"center"});
-});
-loadDaniLocalCars();
+    loadCars();
 </script>
+
 </body>
 </html>
