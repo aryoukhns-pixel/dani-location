@@ -36,4 +36,118 @@
         @media(max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .cars-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
-<body>
+<body></header>
+
+<section class="hero">
+    <div class="hero-inner">
+        <div>
+            <div class="eyebrow">Votre route commence ici</div>
+            <h1>La bonne voiture.<br><span>Le bon voyage.</span></h1>
+            <p>Découvrez des voitures proposées par des partenaires locaux au Maroc. Envoyez une demande de réservation simplement.</p>
+        </div>
+        <div class="search">
+            <div class="field">
+                <label>Ville de départ</label>
+                <select>
+                    <option>Toutes les villes</option>
+                    <option>Casablanca</option>
+                    <option>Marrakech</option>
+                    <option>Agadir</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="cars">
+    <div class="inner">
+        <h2>Voitures en vedette</h2>
+        <p style="color: var(--muted); font-size: 14px; margin-bottom: 20px;">Exemples de présentation — disponibilité à confirmer.</p>
+        <div class="cars-grid" id="cars-container">
+            <p>Chargement des voitures...</p>
+        </div>
+    </div>
+</section>
+
+<section id="reservation" style="background: white;">
+    <div class="inner" style="display: block;">
+        <h2 style="text-align: center;">Demande de réservation</h2>
+        <p style="text-align: center; color: var(--muted); margin-bottom: 30px;">Laissez vos coordonnées. Votre demande ne constitue pas une réservation confirmée.</p>
+        <form id="bookingForm" style="max-width: 500px; margin: auto; display: grid; gap: 15px;">
+            <div class="field">
+                <label>Nom complet</label>
+                <input type="text" id="customerName" required placeholder="Ex: Mido">
+            </div>
+            <div class="field">
+                <label>Numéro de téléphone</label>
+                <input type="tel" id="customerPhone" required placeholder="Ex: 062XXXXXXX">
+            </div>
+            <div class="field">
+                <label>Choisir une voiture</label>
+                <select id="selectedCar" required>
+                    <option value="">Sélectionnez une voiture</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Date de départ</label>
+                <input type="date" id="startDate" required>
+            </div>
+            <div class="field">
+                <label>Date de retour</label>
+                <input type="date" id="endDate" required>
+            </div>
+            <button type="submit" class="btn" style="margin-top: 10px;">Envoyer la demande</button>
+            <p id="successMessage" class="hidden" style="color: var(--green); font-weight: bold; text-align: center;">Demande envoyée avec succès !</p>
+        </form>
+    </div>
+</section>
+
+<script>
+    const SUPABASE_URL = 'https://dzglzwqlocipxcblcpim.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_hgA_vNaEcF72KgSX4CX5Xw_HL1U1Dr5';
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function loadCars() {
+        const { data: cars, error } = await supabaseClient.from('cars').select('*');
+        if (error) { console.error(error); return; }
+        const container = document.getElementById('cars-container');
+        const select = document.getElementById('selectedCar');
+        container.innerHTML = '';
+        if (cars.length === 0) {
+            container.innerHTML = '<p>Aucune voiture disponible pour le moment.</p>';
+            return;
+        }
+        cars.forEach(car => {
+            container.innerHTML += `<div class="car-card"><div class="car-art">🚗</div><div class="car-body"><h3>${car.name}</h3><div class="car-price">${car.price} MAD / jour</div></div></div>`;
+            select.innerHTML += `<option value="${car.id}">${car.name} - ${car.price} MAD</option>`;
+        });
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const bookingData = {
+            customer_name: document.getElementById('customerName').value,
+            phone: document.getElementById('customerPhone').value,
+            car_id: document.getElementById('selectedCar').value,
+            start_date: document.getElementById('startDate').value,
+            end_date: document.getElementById('endDate').value,
+            status: 'nouveau'
+        };
+        const { data, error } = await supabaseClient.from('bookings').insert([bookingData]);
+        if (error) {
+            alert("Erreur: " + error.message);
+        } else {
+            document.getElementById('bookingForm').reset();
+            document.getElementById('successMessage').classList.remove('hidden');
+            const phone = '212623406676';
+            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je veux réserver une voiture du ${bookingData.start_date} au ${bookingData.end_date}.`;
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+    });
+
+    loadCars();
+</script>
+
+</body>
+</html>
