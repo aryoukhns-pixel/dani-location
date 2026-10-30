@@ -36,7 +36,11 @@
         @media(max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .cars-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
-<body></header>
+<body>
+
+<header>
+    <div class="brand">DANI<small>LOCATION DE VOITURES</small></div>
+</header>
 
 <section class="hero">
     <div class="hero-inner">
@@ -119,8 +123,11 @@
             return;
         }
         cars.forEach(car => {
-            container.innerHTML += `<div class="car-card"><div class="car-art">🚗</div><div class="car-body"><h3>${car.name}</h3><div class="car-price">${car.price} MAD / jour</div></div></div>`;
-            select.innerHTML += `<option value="${car.id}">${car.name} - ${car.price} MAD</option>`;
+            const priceText = car.price_per_day ? car.price_per_day + ' MAD / jour' : 'Sur demande';
+            const optionText = car.price_per_day ? car.price_per_day + ' MAD' : 'Sur demande';
+            
+            container.innerHTML += `<div class="car-card"><div class="car-art">🚗</div><div class="car-body"><h3>${car.name}</h3><div class="car-price">${priceText}</div></div></div>`;
+            select.innerHTML += `<option value="${car.id}">${car.name} - ${optionText}</option>`;
         });
     }
 
