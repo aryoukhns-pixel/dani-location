@@ -89,8 +89,26 @@
                 <input type="tel" id="customerPhone" required placeholder="Ex: 062XXXXXXX">
             </div>
             <div class="field">
+                <label>Ville souhaitée</label>
+                <select id="city" required>
+                    <option value="">Sélectionnez une ville</option>
+                    <option value="Casablanca">Casablanca</option>
+                    <option value="Marrakech">Marrakech</option>
+                    <option value="Agadir">Agadir</option>
+                </select>
+            </div>
+            <div class="field">
                 <label>Quelle voiture cherchez-vous ?</label>
                 <input type="text" id="carRequested" required placeholder="Ex: Dacia Logan, Clio, etc.">
+            </div>
+            <div class="field">
+                <label>Langue de communication</label>
+                <select id="language" required>
+                    <option value="">Sélectionnez une langue</option>
+                    <option value="Français">Français</option>
+                    <option value="Arabe">العربية</option>
+                    <option value="Anglais">English</option>
+                </select>
             </div>
             <div class="field">
                 <label>Date de départ</label>
@@ -138,7 +156,9 @@
         const bookingData = {
             customer_name: document.getElementById('customerName').value,
             phone: document.getElementById('customerPhone').value,
+            city: document.getElementById('city').value,
             requested_car: document.getElementById('carRequested').value,
+            language: document.getElementById('language').value,
             start_date: document.getElementById('startDate').value,
             end_date: document.getElementById('endDate').value,
             status: 'nouveau'
@@ -153,7 +173,7 @@
             document.getElementById('successMessage').classList.remove('hidden');
             
             const phone = '212623406676';
-            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je cherche une voiture : ${bookingData.requested_car} du ${bookingData.start_date} au ${bookingData.end_date}.`;
+            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je cherche une voiture : ${bookingData.requested_car} à ${bookingData.city} du ${bookingData.start_date} au ${bookingData.end_date}. Langue souhaitée : ${bookingData.language}.`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
     });
