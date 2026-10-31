@@ -102,6 +102,20 @@
                 <input type="text" id="carRequested" required placeholder="Ex: Dacia Logan, Clio, etc.">
             </div>
             <div class="field">
+                <label>Lieu de prise en charge</label>
+                <select id="pickupSelect" required>
+                    <option value="">Sélectionnez un lieu</option>
+                    <option value="Aéroport">Aéroport</option>
+                    <option value="Gare ferroviaire">Gare ferroviaire</option>
+                    <option value="Gare routière">Gare routière</option>
+                    <option value="Autre">Autre (précisez)</option>
+                </select>
+            </div>
+            <div class="field hidden" id="otherLocationField">
+                <label>Précisez le lieu exact</label>
+                <input type="text" id="otherLocationInput" placeholder="Ex: Hôtel, Centre-ville...">
+            </div>
+            <div class="field">
                 <label>Langue de communication</label>
                 <select id="language" required>
                     <option value="">Sélectionnez une langue</option>
@@ -150,14 +164,33 @@
         });
     }
 
+    document.getElementById('pickupSelect').addEventListener('change', function() {
+        const otherField = document.getElementById('otherLocationField');
+        const otherInput = document.getElementById('otherLocationInput');
+        if (this.value === 'Autre') {
+            otherField.classList.remove('hidden');
+            otherInput.setAttribute('required', 'required');
+        } else {
+            otherField.classList.add('hidden');
+            otherInput.removeAttribute('required');
+            otherInput.value = '';
+        }
+    });
+
     document.getElementById('bookingForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        let pickupLocation = document.getElementById('pickupSelect').value;
+        if (pickupLocation === 'Autre') {
+            pickupLocation = document.getElementById('otherLocationInput').value;
+        }
+
         const bookingData = {
             customer_name: document.getElementById('customerName').value,
             phone: document.getElementById('customerPhone').value,
             city: document.getElementById('city').value,
             requested_car: document.getElementById('carRequested').value,
+            pickup_location: pickupLocation,
             language: document.getElementById('language').value,
             start_date: document.getElementById('startDate').value,
             end_date: document.getElementById('endDate').value,
@@ -170,10 +203,12 @@
             alert("Erreur: " + error.message);
         } else {
             document.getElementById('bookingForm').reset();
+            document.getElementById('otherLocationField').classList.add('hidden');
+            document.getElementById('otherLocationInput').removeAttribute('required');
             document.getElementById('successMessage').classList.remove('hidden');
             
             const phone = '212623406676';
-            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je cherche une voiture : ${bookingData.requested_car} à ${bookingData.city} du ${bookingData.start_date} au ${bookingData.end_date}. Langue souhaitée : ${bookingData.language}.`;
+            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je cherche une voiture : ${bookingData.requested_car} à ${bookingData.city} du ${bookingData.start_date} au ${bookingData.end_date}. Lieu de prise en charge : ${bookingData.pickup_location}. Langue souhaitée : ${bookingData.language}.`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
     });
