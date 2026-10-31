@@ -22,17 +22,19 @@
         .hero p { color: #d6deea; line-height: 1.7; max-width: 480px; }
         .search { background: white; border-radius: 12px; padding: 17px; display: grid; gap: 12px; margin-top: 25px; }
         .field label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
-        input, select { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 14px; }
+        input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 14px; }
         .btn { background: var(--gold); color: white; border: none; padding: 13px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
         .btn:hover { opacity: 0.9; }
         section { padding: 30px 5%; }
         .cars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
         .car-card { background: white; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-        .car-art { background: var(--paper); height: 120px; display: flex; align-items: center; justify-content: center; font-size: 40px; }
+        .car-art { background: var(--paper); height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .car-art img { width: 100%; height: 100%; object-fit: cover; }
         .car-body { padding: 15px; }
         .car-body h3 { margin: 0 0 10px 0; font-size: 18px; }
-        .car-price { color: var(--gold); font-weight: bold; font-size: 16px; }
         .hidden { display: none; }
+        .message-box { padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-weight: bold; }
+        .success-msg { background: #d4edda; color: #155724; }
         @media(max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .cars-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -87,10 +89,8 @@
                 <input type="tel" id="customerPhone" required placeholder="Ex: 062XXXXXXX">
             </div>
             <div class="field">
-                <label>Choisir une voiture</label>
-                <select id="selectedCar" required>
-                    <option value="">Sélectionnez une voiture</option>
-                </select>
+                <label>Quelle voiture cherchez-vous ?</label>
+                <input type="text" id="carRequested" required placeholder="Ex: Dacia Logan, Clio, etc.">
             </div>
             <div class="field">
                 <label>Date de départ</label>
@@ -101,7 +101,9 @@
                 <input type="date" id="endDate" required>
             </div>
             <button type="submit" class="btn" style="margin-top: 10px;">Envoyer la demande</button>
-            <p id="successMessage" class="hidden" style="color: var(--green); font-weight: bold; text-align: center;">Demande envoyée avec succès !</p>
+            <div id="successMessage" class="message-box success-msg hidden">
+                Votre demande a bien été reçue. Nous vérifions la disponibilité et nous vous répondrons sous 24 à 48 heures maximum.
+            </div>
         </form>
     </div>
 </section>
@@ -115,40 +117,43 @@
     async function loadCars() {
         const { data: cars, error } = await supabaseClient.from('cars').select('*');
         if (error) { console.error(error); return; }
+        
         const container = document.getElementById('cars-container');
-        const select = document.getElementById('selectedCar');
         container.innerHTML = '';
-        if (cars.length === 0) {
+        
+        if (!cars || cars.length === 0) {
             container.innerHTML = '<p>Aucune voiture disponible pour le moment.</p>';
             return;
         }
+        
         cars.forEach(car => {
-            const priceText = car.price_per_day ? car.price_per_day + ' MAD / jour' : 'Sur demande';
-            const optionText = car.price_per_day ? car.price_per_day + ' MAD' : 'Sur demande';
-            
-            container.innerHTML += `<div class="car-card"><div class="car-art">🚗</div><div class="car-body"><h3>${car.name}</h3><div class="car-price">${priceText}</div></div></div>`;
-            select.innerHTML += `<option value="${car.id}">${car.name} - ${optionText}</option>`;
+            const imageUrl = car.image_url ? car.image_url : 'https://via.placeholder.com/200x150?text=Voiture';
+            container.innerHTML += `<div class="car-card"><div class="car-art"><img src="${imageUrl}" alt="${car.name}"></div><div class="car-body"><h3>${car.name}</h3></div></div>`;
         });
     }
 
     document.getElementById('bookingForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        
         const bookingData = {
             customer_name: document.getElementById('customerName').value,
             phone: document.getElementById('customerPhone').value,
-            car_id: document.getElementById('selectedCar').value,
+            requested_car: document.getElementById('carRequested').value,
             start_date: document.getElementById('startDate').value,
             end_date: document.getElementById('endDate').value,
             status: 'nouveau'
         };
+
         const { data, error } = await supabaseClient.from('bookings').insert([bookingData]);
+        
         if (error) {
             alert("Erreur: " + error.message);
         } else {
             document.getElementById('bookingForm').reset();
             document.getElementById('successMessage').classList.remove('hidden');
+            
             const phone = '212623406676';
-            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je veux réserver une voiture du ${bookingData.start_date} au ${bookingData.end_date}.`;
+            const message = `Bonjour DANI, je suis ${bookingData.customer_name}. Je cherche une voiture : ${bookingData.requested_car} du ${bookingData.start_date} au ${bookingData.end_date}.`;
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
         }
     });
