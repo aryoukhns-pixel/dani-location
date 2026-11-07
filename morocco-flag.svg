@@ -1,6 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="120" height="80" viewBox="0 0 120 80">
-  <title>Drapeau marocain avec silhouette du Maroc</title>
-  <rect x="2" y="2" width="116" height="76" rx="9" fill="#c1272d"/>
-  <path d="M47 13 L61 17 L69 26 L66 34 L74 42 L69 52 L61 59 L57 70 L47 66 L43 56 L35 51 L38 42 L32 34 L38 26 L39 18 Z" fill="#fff" stroke="#006233" stroke-width="2.5" stroke-linejoin="round"/>
-  <path d="M52 31 L55 40 L64 40 L57 45 L60 54 L52 48 L44 54 L47 45 L40 40 L49 40 Z" fill="#006233"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Badge rond du drapeau marocain avec la carte du Maroc bien visible</title>
+  <circle cx="256" cy="256" r="244" fill="#c1272d"/>
+  <circle cx="256" cy="256" r="231" fill="none" stroke="#ffffff" stroke-width="10"/>
+  <path d="M177 76 L226 87 L255 112 L286 121 L306 151 L293 178 L317 203 L304 230 L324 254 L308 281 L289 299 L281 333 L261 353 L252 391 L225 410 L205 388 L195 354 L171 336 L177 309 L151 285 L164 257 L145 232 L163 207 L155 179 L174 158 L166 130 Z"
+        fill="#ffffff" stroke="#006233" stroke-width="9" stroke-linejoin="round"/>
+  <path d="M231 190 L245 224 L282 224 L252 246 L263 282 L231 260 L199 282 L211 246 L181 224 L218 224 Z"
+        fill="#006233" stroke="#006233" stroke-width="3" stroke-linejoin="round"/>
 </svg>
