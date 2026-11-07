@@ -28,7 +28,13 @@
         .btn { background: var(--gold); color: white; border: none; padding: 13px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
         .btn:hover { opacity: 0.9; }
         section { padding: 30px 5%; }
-        .cars-grid { display: grid; grid-template-columns: minmax(0, 470px); gap: 18px; }
+        .cars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+        .sample-models { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+        .sample-model { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 14px; text-align: center; }
+        .sample-model svg { width: 100%; max-width: 190px; height: 85px; color: #263b59; }
+        .sample-model h3 { margin: 8px 0 5px; font-size: 16px; }
+        .sample-model p { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+        .sample-model button { border: 0; border-radius: 7px; background: #142d4c; color: white; padding: 9px 12px; cursor: pointer; font-weight: 700; }
         .car-card { background: white; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 3px 8px #14203320; }
         .car-art { background: var(--paper); height: 290px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .car-art img { width: 100%; height: 100%; object-fit: cover; }
@@ -66,6 +72,7 @@
             .hero-inner { grid-template-columns: 1fr; gap: 15px; }
             .hero h1 { font-size: 36px; }
             .cars-grid { grid-template-columns: 1fr; }
+            .sample-models { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .car-art { height: 220px; }
         }
     </style>
@@ -108,6 +115,15 @@
     <div class="inner">
         <h2>Voitures disponibles</h2>
         <p style="color: var(--muted); font-size: 14px; margin-bottom: 20px;">Consultez les véhicules et demandez leur disponibilité ainsi que le tarif directement sur WhatsApp. Les prix ne sont pas affichés publiquement.</p>
+        <h3>Exemples de modèles</h3>
+        <p style="color:var(--muted);font-size:13px;">Ces modèles sont des exemples pour vous aider à choisir. Ils ne représentent pas une disponibilité confirmée.</p>
+        <div class="sample-models" id="sample-models">
+            <article class="sample-model"><svg viewBox="0 0 220 90" aria-hidden="true"><path d="M22 59 L34 40 Q39 34 55 32 L80 18 Q88 13 103 13 L145 15 Q156 16 164 29 L185 42 L197 49 L200 65 L190 72 L30 72 L20 66Z" fill="currentColor" opacity=".16" stroke="currentColor" stroke-width="3"/><circle cx="59" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><circle cx="164" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><path d="M81 20 L72 40 L167 40 L151 19Z" fill="currentColor" opacity=".25"/></svg><h3>Dacia Logan</h3><p>Berline — exemple de modèle</p><button type="button" onclick="chooseSampleCar('Dacia Logan')">Choisir ce modèle</button></article>
+            <article class="sample-model"><svg viewBox="0 0 220 90" aria-hidden="true"><path d="M22 59 L34 40 Q39 34 55 32 L80 18 Q88 13 103 13 L145 15 Q156 16 164 29 L185 42 L197 49 L200 65 L190 72 L30 72 L20 66Z" fill="currentColor" opacity=".16" stroke="currentColor" stroke-width="3"/><circle cx="59" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><circle cx="164" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><path d="M81 20 L72 40 L167 40 L151 19Z" fill="currentColor" opacity=".25"/></svg><h3>Dacia Sandero</h3><p>Citadine — exemple de modèle</p><button type="button" onclick="chooseSampleCar('Dacia Sandero')">Choisir ce modèle</button></article>
+            <article class="sample-model"><svg viewBox="0 0 220 90" aria-hidden="true"><path d="M18 56 L30 34 Q38 26 57 26 L76 15 L147 15 Q165 15 175 32 L194 45 L202 62 L192 72 L28 72 L18 65Z" fill="currentColor" opacity=".16" stroke="currentColor" stroke-width="3"/><circle cx="58" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><circle cx="166" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><path d="M80 18 L72 39 L174 39 L158 18Z" fill="currentColor" opacity=".25"/></svg><h3>Dacia Duster</h3><p>SUV — exemple de modèle</p><button type="button" onclick="chooseSampleCar('Dacia Duster')">Choisir ce modèle</button></article>
+            <article class="sample-model"><svg viewBox="0 0 220 90" aria-hidden="true"><path d="M22 59 L34 40 Q39 34 55 32 L80 18 Q88 13 103 13 L145 15 Q156 16 164 29 L185 42 L197 49 L200 65 L190 72 L30 72 L20 66Z" fill="currentColor" opacity=".16" stroke="currentColor" stroke-width="3"/><circle cx="59" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><circle cx="164" cy="69" r="13" fill="#fff" stroke="currentColor" stroke-width="5"/><path d="M81 20 L72 40 L167 40 L151 19Z" fill="currentColor" opacity=".25"/></svg><h3>Renault Clio</h3><p>Citadine — exemple de modèle</p><button type="button" onclick="chooseSampleCar('Renault Clio')">Choisir ce modèle</button></article>
+        </div>
+        <h3 style="margin-top:25px;">Véhicules réellement publiés</h3>
         <div class="cars-grid" id="cars-container">
             <p>Chargement des voitures...</p>
         </div>
@@ -138,7 +154,19 @@
             </div>
             <div class="field">
                 <label>Quelle voiture cherchez-vous ?</label>
-                <input type="text" id="carRequested" required placeholder="Ex: Dacia Logan, Clio, etc.">
+                <select id="carRequested" required>
+                    <option value="">Choisissez un modèle</option>
+                    <option value="Dacia Logan">Dacia Logan</option>
+                    <option value="Dacia Sandero">Dacia Sandero</option>
+                    <option value="Dacia Duster">Dacia Duster</option>
+                    <option value="Renault Clio">Renault Clio</option>
+                    <option value="Autre">Autre modèle</option>
+                </select>
+            </div>
+            <div class="field hidden" id="otherCarField">
+                <label>Précisez le modèle souhaité</label>
+                <input type="text" id="otherCarInput" placeholder="Indiquez la marque et le modèle">
+
             </div>
             <div class="field">
                 <label>Lieu de prise en charge</label>
@@ -255,6 +283,25 @@
         });
     }
 
+    function chooseSampleCar(model) {
+        const select = document.getElementById('carRequested');
+        select.value = model;
+        document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.getElementById('carRequested').addEventListener('change', function() {
+        const field = document.getElementById('otherCarField');
+        const input = document.getElementById('otherCarInput');
+        if (this.value === 'Autre') {
+            field.classList.remove('hidden');
+            input.required = true;
+        } else {
+            field.classList.add('hidden');
+            input.required = false;
+            input.value = '';
+        }
+    });
+
     document.getElementById('pickupSelect').addEventListener('change', function() {
         const otherField = document.getElementById('otherLocationField');
         const otherInput = document.getElementById('otherLocationInput');
@@ -276,11 +323,14 @@
             pickupLocation = document.getElementById('otherLocationInput').value;
         }
 
+        const requestedCar = document.getElementById('carRequested').value === 'Autre'
+            ? document.getElementById('otherCarInput').value.trim()
+            : document.getElementById('carRequested').value;
         const bookingData = {
             customer_name: document.getElementById('customerName').value,
             phone: document.getElementById('customerPhone').value,
             city: document.getElementById('city').value,
-            requested_car: document.getElementById('carRequested').value,
+            requested_car: requestedCar,
             pickup_location: pickupLocation,
             language: document.getElementById('communicationLanguage').value,
             start_date: document.getElementById('startDate').value,
@@ -294,6 +344,8 @@
             alert("Erreur: " + error.message);
         } else {
             document.getElementById('bookingForm').reset();
+            document.getElementById('otherCarField').classList.add('hidden');
+            document.getElementById('otherCarInput').required = false;
             document.getElementById('otherLocationField').classList.add('hidden');
             document.getElementById('otherLocationInput').removeAttribute('required');
             document.getElementById('successMessage').classList.remove('hidden');
