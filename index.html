@@ -11,24 +11,26 @@
         body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--ink); background: var(--paper); }
         a { color: inherit; text-decoration: none; }
         .inner { max-width: 1120px; margin: auto; display: grid; gap: 30px; padding: 0 20px; }
-        header { background: #101a2a; color: white; padding: 17px 5px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-        .brand { font-size: 25px; font-weight: 900; letter-spacing: .4px; }
-        .brand small { display: block; font-size: 10px; letter-spacing: 2px; color: #e3c37c; }
-        .hero { padding: 60px 5%; background: linear-gradient(120deg, #111c2d 0%, #1b304a 65%, #24352 100%); color: white; }
+        header { background: #07172f; color: white; padding: 8px 28px; display: flex; align-items: center; justify-content: flex-start; gap: 22px; min-height: 118px; }
+        .brand-mark { width: 112px; height: 112px; flex: 0 0 112px; border-radius: 50%; border: 3px solid #e2bd59; box-shadow: 0 2px 8px #0005; }
+        .brand { font-size: clamp(38px, 5vw, 64px); line-height: 1; font-weight: 900; letter-spacing: 1px; }
+        .brand small { display: block; margin-top: 6px; font-size: clamp(14px, 1.8vw, 22px); letter-spacing: 2px; color: #e3b536; }
+        .hero { padding: 34px 3.5%; background: linear-gradient(120deg, #f3f5fa 0%, #e8edf5 100%); color: var(--ink); }
         .hero-inner { max-width: 1120px; margin: auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 30px; align-items: center; }
         .eyebrow { color: #e3c37c; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; font-weight: bold; }
         .hero h1 { font-size: clamp(35px, 5vw, 58px); line-height: 1.04; margin: 14px 0; }
-        .hero h1 span { color: #e3c37c; }
-        .hero p { color: #d6deea; line-height: 1.7; max-width: 480px; }
+        .hero h1 { text-shadow: 0 2px 3px #14203318; }
+        .hero h1 span { color: #d5a12d; }
+        .hero p { color: #657184; line-height: 1.7; max-width: 620px; }
         .search { background: white; border-radius: 12px; padding: 17px; display: grid; gap: 12px; margin-top: 25px; }
         .field label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; }
         input, select, textarea { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 14px; }
         .btn { background: var(--gold); color: white; border: none; padding: 13px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; }
         .btn:hover { opacity: 0.9; }
         section { padding: 30px 5%; }
-        .cars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-        .car-card { background: white; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-        .car-art { background: var(--paper); height: 150px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .cars-grid { display: grid; grid-template-columns: minmax(0, 470px); gap: 18px; }
+        .car-card { background: white; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: 0 3px 8px #14203320; }
+        .car-art { background: var(--paper); height: 290px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
         .car-art img { width: 100%; height: 100%; object-fit: cover; }
         .car-art .car-flag { display: block; width: auto; height: 100%; max-width: 100%; object-fit: contain; border-radius: 0; }
         .car-body { padding: 15px; }
@@ -36,12 +38,28 @@
         .hidden { display: none; }
         .message-box { padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-weight: bold; }
         .success-msg { background: #d4edda; color: #155724; }
-        @media(max-width: 760px) { .hero-inner { grid-template-columns: 1fr; } .cars-grid { grid-template-columns: 1fr; } }
+        @media(max-width: 760px) {
+            header { min-height: 62px; padding: 5px 12px; gap: 10px; }
+            .brand-mark { width: 52px; height: 52px; flex-basis: 52px; border-width: 2px; }
+            .brand { font-size: 31px; }
+            .brand small { font-size: 9px; letter-spacing: 1.5px; margin-top: 3px; }
+            .hero { padding: 28px 5%; }
+            .hero-inner { grid-template-columns: 1fr; gap: 15px; }
+            .hero h1 { font-size: 36px; }
+            .cars-grid { grid-template-columns: 1fr; }
+            .car-art { height: 220px; }
+        }
     </style>
 </head>
 <body>
 
 <header>
+    <svg class="brand-mark" viewBox="0 0 120 120" role="img" aria-label="Logo DANI">
+        <defs><radialGradient id="redLogo" cx="35%" cy="28%"><stop offset="0" stop-color="#ed252b"/><stop offset="1" stop-color="#a90018"/></radialGradient></defs>
+        <circle cx="60" cy="60" r="57" fill="url(#redLogo)" stroke="#e2bd59" stroke-width="3"/>
+        <path d="M34 91 L43 75 L49 67 L47 57 L57 49 L62 38 L72 30 L83 25 L80 39 L72 49 L68 60 L61 69 L58 83 L48 91 Z" fill="none" stroke="#f7e7ae" stroke-width="2.7" stroke-linejoin="round"/>
+        <path d="M60 46 L64 55 L74 55 L66 62 L69 72 L60 66 L51 72 L54 62 L46 55 L56 55 Z" fill="#16834c" stroke="#f4d36b" stroke-width="1.2"/>
+    </svg>
     <div class="brand">DANI<small>LOCATION DE VOITURES</small></div>
 </header>
 
@@ -162,7 +180,7 @@
         cars.forEach(car => {
             const carVisual = car.image_url
                 ? `<img src="${car.image_url}" alt="${car.name}">`
-                : '<img class="car-flag" src="./morocco-flag.svg?v=3" alt="Drapeau marocain">';
+                : '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dacia_Logan_102829.jpg/960px-Dacia_Logan_102829.jpg" alt="Dacia Logan" loading="lazy">';
             container.innerHTML += `<div class="car-card"><div class="car-art">${carVisual}</div><div class="car-body"><h3>${car.name}</h3></div></div>`;
         });
     }
