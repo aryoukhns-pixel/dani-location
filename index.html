@@ -38,6 +38,16 @@
         .hidden { display: none; }
         .message-box { padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-weight: bold; }
         .success-msg { background: #d4edda; color: #155724; }
+
+        /* DANI global language selector */
+        #google_translate_element { margin-left: auto; min-width: 150px; color: #142033; }
+        #google_translate_element .goog-te-gadget { font-family: Arial, sans-serif; color: #fff; font-size: 12px; }
+        #google_translate_element .goog-te-gadget-simple { border: 1px solid #d5a84f; border-radius: 8px; padding: 7px 9px; background: #fff; }
+        #google_translate_element .goog-te-gadget-simple .goog-te-menu-value { color: #142033; }
+        .goog-te-banner-frame.skiptranslate { display: none !important; }
+        body { top: 0 !important; }
+        @media(max-width:760px) { #google_translate_element { margin-left: auto; min-width: 115px; } #google_translate_element .goog-te-gadget-simple { padding: 5px 6px; } }
+
         @media(max-width: 760px) {
             header { min-height: 62px; padding: 5px 12px; gap: 10px; }
             .brand-mark { width: 52px; height: 52px; flex-basis: 52px; border-width: 2px; }
@@ -61,6 +71,7 @@
         <path d="M60 46 L64 55 L74 55 L66 62 L69 72 L60 66 L51 72 L54 62 L46 55 L56 55 Z" fill="#16834c" stroke="#f4d36b" stroke-width="1.2"/>
     </svg>
     <div class="brand">DANI<small>LOCATION DE VOITURES</small></div>
+    <div id="google_translate_element" aria-label="Choose website language"></div>
 </header>
 
 <section class="hero">
@@ -136,11 +147,22 @@
             </div>
             <div class="field">
                 <label>Langue de communication</label>
-                <select id="language" required>
+                <select id="communicationLanguage" required>
                     <option value="">Sélectionnez une langue</option>
-                    <option value="Français">Français</option>
-                    <option value="Arabe">العربية</option>
-                    <option value="Anglais">English</option>
+                    <option value="Français">Français</option><option value="Arabe">العربية</option>
+                    <option value="Anglais">English</option><option value="Espagnol">Español</option>
+                    <option value="Allemand">Deutsch</option><option value="Italien">Italiano</option>
+                    <option value="Portugais">Português</option><option value="Néerlandais">Nederlands</option>
+                    <option value="Turc">Türkçe</option><option value="Russe">Русский</option>
+                    <option value="Chinois">中文</option><option value="Japonais">日本語</option>
+                    <option value="Coréen">한국어</option><option value="Hindi">हिन्दी</option>
+                    <option value="Ourdou">اردو</option><option value="Bengali">বাংলা</option>
+                    <option value="Indonésien">Bahasa Indonesia</option><option value="Malais">Bahasa Melayu</option>
+                    <option value="Swahili">Kiswahili</option><option value="Polonais">Polski</option>
+                    <option value="Suédois">Svenska</option><option value="Norvégien">Norsk</option>
+                    <option value="Danois">Dansk</option><option value="Grec">Ελληνικά</option>
+                    <option value="Hébreu">עברית</option><option value="Thaï">ไทย</option>
+                    <option value="Vietnamien">Tiếng Việt</option><option value="Ukrainien">Українська</option>
                 </select>
             </div>
             <div class="field">
@@ -212,7 +234,7 @@
             city: document.getElementById('city').value,
             requested_car: document.getElementById('carRequested').value,
             pickup_location: pickupLocation,
-            language: document.getElementById('language').value,
+            language: document.getElementById('communicationLanguage').value,
             start_date: document.getElementById('startDate').value,
             end_date: document.getElementById('endDate').value,
             status: 'nouveau'
@@ -235,6 +257,21 @@
     });
 
     loadCars();
+
+    // Google Translate provides a large catalogue of languages and translates the complete page.
+    function googleTranslateElementInit() {
+        if (window.google && google.translate) {
+            new google.translate.TranslateElement({
+                pageLanguage: 'fr',
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    }
+    window.googleTranslateElementInit = googleTranslateElementInit;
+    const translateScript = document.createElement('script');
+    translateScript.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    translateScript.async = true;
+    document.head.appendChild(translateScript);
 </script>
 
 </body>
