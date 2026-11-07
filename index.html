@@ -13,6 +13,8 @@
         .inner { max-width: 1120px; margin: auto; display: grid; gap: 30px; padding: 0 20px; }
         header { background: #101a2a; color: white; padding: 17px 5px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
         .brand { font-size: 25px; font-weight: 900; letter-spacing: .4px; }
+        .brand-top { display: flex; align-items: center; gap: 8px; }
+        .brand-flag { display: block; width: 30px; height: 20px; object-fit: cover; border-radius: 3px; border: 1px solid rgba(255,255,255,.35); }
         .brand small { display: block; font-size: 10px; letter-spacing: 2px; color: #e3c37c; }
         .hero { padding: 60px 5%; background: linear-gradient(120deg, #111c2d 0%, #1b304a 65%, #24352 100%); color: white; }
         .hero-inner { max-width: 1120px; margin: auto; display: grid; grid-template-columns: 1.1fr .9fr; gap: 30px; align-items: center; }
@@ -41,7 +43,7 @@
 <body>
 
 <header>
-    <div class="brand">DANI<small>LOCATION DE VOITURES</small></div>
+    <div class="brand"><span class="brand-top"><img class="brand-flag" src="./morocco-flag.svg" alt="Drapeau marocain">DANI</span><small>LOCATION DE VOITURES</small></div>
 </header>
 
 <section class="hero">
