@@ -267,9 +267,10 @@
                     ? car.gallery_urls.split(/[\\n,;]+/).map(url => url.trim()).filter(Boolean) : []);
             if (car.image_url) images.unshift(car.image_url);
             const uniqueImages = [...new Set(images)].filter(url => /^https:\/\//i.test(url));
+            const fallbackImage = 'https://images.largus.fr/permalink/v1/4/344118/document/dacia-logan-III-MY-2025-001.jpg';
             const mainImage = uniqueImages[0]
-                ? `<img src="${escapeHTML(uniqueImages[0])}" alt="${name}" loading="lazy">`
-                : '<div style="color:var(--muted);padding:25px;text-align:center;">Photos bientôt disponibles</div>';
+                ? `<img src="${escapeHTML(uniqueImages[0])}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='https://images.largus.fr/permalink/v1/4/344118/document/dacia-logan-III-MY-2025-001.jpg'">`
+                : `<img src="https://images.largus.fr/permalink/v1/4/344118/document/dacia-logan-III-MY-2025-001.jpg" alt="${name} — photo illustrative" loading="lazy">`;
             const thumbs = uniqueImages.length > 1
                 ? `<div class="car-thumbs">${uniqueImages.slice(1).map(url => `<img src="${escapeHTML(url)}" alt="Photo de ${name}" loading="lazy">`).join('')}</div>` : '';
             const video = car.video_url && /^https:\/\//i.test(car.video_url)
