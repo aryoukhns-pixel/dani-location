@@ -35,6 +35,15 @@
         .car-art .car-flag { display: block; width: auto; height: 100%; max-width: 100%; object-fit: contain; border-radius: 0; }
         .car-body { padding: 15px; }
         .car-body h3 { margin: 0 0 10px 0; font-size: 18px; }
+        .car-status { display: inline-flex; align-items: center; gap: 7px; border-radius: 30px; padding: 7px 11px; font-size: 12px; font-weight: 700; margin: 3px 0 12px; background: #eef1f5; color: #536174; }
+        .car-status.available { background: #e2f5eb; color: #147d55; }
+        .car-status.unavailable { background: #fce9e9; color: #a83232; }
+        .car-media { display: grid; gap: 8px; }
+        .car-media video { display: block; width: 100%; max-height: 260px; background: #111; border-radius: 10px; }
+        .car-media .car-thumbs { display: flex; gap: 7px; overflow-x: auto; }
+        .car-media .car-thumbs img { width: 76px; height: 58px; object-fit: cover; border-radius: 7px; cursor: pointer; }
+        .price-request { display: block; text-align: center; background: #147d55; color: #fff; border-radius: 8px; padding: 12px 14px; margin-top: 12px; font-weight: 700; }
+        .price-request:hover { opacity: .9; }
         .hidden { display: none; }
         .message-box { padding: 15px; border-radius: 8px; margin-top: 15px; text-align: center; font-weight: bold; }
         .success-msg { background: #d4edda; color: #155724; }
@@ -97,8 +106,8 @@
 
 <section id="cars">
     <div class="inner">
-        <h2>Voitures en vedette</h2>
-        <p style="color: var(--muted); font-size: 14px; margin-bottom: 20px;">Exemples de présentation — disponibilité à confirmer.</p>
+        <h2>Voitures disponibles</h2>
+        <p style="color: var(--muted); font-size: 14px; margin-bottom: 20px;">Consultez les véhicules et demandez leur disponibilité ainsi que le tarif directement sur WhatsApp. Les prix ne sont pas affichés publiquement.</p>
         <div class="cars-grid" id="cars-container">
             <p>Chargement des voitures...</p>
         </div>
@@ -187,23 +196,62 @@
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    function escapeHTML(value) {
+        return String(value ?? '').replace(/[&<>"']/g, char => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[char]));
+    }
+
+    function carAvailability(car) {
+        const raw = String(car.availability ?? car.status ?? car.disponibilite ?? '').toLowerCase().trim();
+        if (car.available === true || ['available', 'disponible', 'متوفرة', 'متاح'].includes(raw)) {
+            return { label: 'Disponible maintenant', className: 'available' };
+        }
+        if (car.available === false || ['unavailable', 'indisponible', 'غير متوفرة', 'محجوزة', 'reserved', 'réservée'].includes(raw)) {
+            return { label: 'Non disponible actuellement', className: 'unavailable' };
+        }
+        return { label: 'Disponibilité à confirmer', className: '' };
+    }
+
     async function loadCars() {
         const { data: cars, error } = await supabaseClient.from('cars').select('*');
-        if (error) { console.error(error); return; }
-        
         const container = document.getElementById('cars-container');
-        container.innerHTML = '';
-        
-        if (!cars || cars.length === 0) {
-            container.innerHTML = '<p>Aucune voiture disponible pour le moment.</p>';
+        if (error) {
+            console.error(error);
+            container.innerHTML = '<p>Impossible de charger les voitures pour le moment. Merci de réessayer plus tard.</p>';
             return;
         }
-        
+
+        container.innerHTML = '';
+        if (!cars || cars.length === 0) {
+            container.innerHTML = '<p>Aucune voiture publiée pour le moment.</p>';
+            return;
+        }
+
         cars.forEach(car => {
-            const carVisual = car.image_url
-                ? `<img src="${car.image_url}" alt="${car.name}">`
-                : '<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dacia_Logan_102829.jpg/960px-Dacia_Logan_102829.jpg" alt="Dacia Logan" loading="lazy">';
-            container.innerHTML += `<div class="car-card"><div class="car-art">${carVisual}</div><div class="car-body"><h3>${car.name}</h3></div></div>`;
+            const name = escapeHTML(car.name || car.model || 'Voiture');
+            const status = carAvailability(car);
+            const images = Array.isArray(car.gallery_urls) ? car.gallery_urls :
+                (typeof car.gallery_urls === 'string' && car.gallery_urls.trim()
+                    ? car.gallery_urls.split(/[\\n,;]+/).map(url => url.trim()).filter(Boolean) : []);
+            if (car.image_url) images.unshift(car.image_url);
+            const uniqueImages = [...new Set(images)].filter(url => /^https:\/\//i.test(url));
+            const mainImage = uniqueImages[0]
+                ? `<img src="${escapeHTML(uniqueImages[0])}" alt="${name}" loading="lazy">`
+                : '<div style="color:var(--muted);padding:25px;text-align:center;">Photos bientôt disponibles</div>';
+            const thumbs = uniqueImages.length > 1
+                ? `<div class="car-thumbs">${uniqueImages.slice(1).map(url => `<img src="${escapeHTML(url)}" alt="Photo de ${name}" loading="lazy">`).join('')}</div>` : '';
+            const video = car.video_url && /^https:\/\//i.test(car.video_url)
+                ? `<video controls playsinline preload="metadata" aria-label="Vidéo de ${name}" src="${escapeHTML(car.video_url)}"></video>` : '';
+            const message = encodeURIComponent(`Bonjour DANI, je souhaite connaître le prix et la disponibilité de cette voiture : ${car.name || car.model || 'Voiture'}. Merci de me communiquer les détails.`);
+            const waLink = `https://wa.me/212623406676?text=${message}`;
+            const card = document.createElement('article');
+            card.className = 'car-card';
+            card.innerHTML = `<div class="car-art"><div class="car-media">${mainImage}${thumbs}${video}</div></div>
+                <div class="car-body"><h3>${name}</h3>
+                <span class="car-status ${status.className}">${status.label}</span>
+                <a class="price-request" href="${waLink}" target="_blank" rel="noopener">Demander le prix sur WhatsApp</a></div>`;
+            container.appendChild(card);
         });
     }
 
